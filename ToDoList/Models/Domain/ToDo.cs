@@ -1,4 +1,6 @@
-﻿namespace ToDoList.Models.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ToDoList.Models.Domain;
 
 public class ToDo
 {

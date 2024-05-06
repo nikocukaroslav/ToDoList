@@ -24,7 +24,22 @@ public class HomeController : Controller
         var model = new HomePageViewModel
         {
             Categories = await toDoListDbContext.Category.ToListAsync(),
-            ToDos = await toDoListDbContext.ToDo.Include(x=> x.Category).ToListAsync(),
+            ToDos = await toDoListDbContext.ToDo.Include(x => x.Category).ToListAsync(),
+        };
+        return View(model);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Index(FilterToDosByCategory filterToDosByCategory)
+    {
+        var filteredToDos = await toDoListDbContext.ToDo
+            .Where(x => x.CategoryId == filterToDosByCategory.CategoryId)
+            .ToListAsync();
+        
+        var model = new HomePageViewModel
+        {
+            Categories = await toDoListDbContext.Category.ToListAsync(), 
+            ToDos = filteredToDos,
         };
         return View(model);
     }
@@ -44,15 +59,56 @@ public class HomeController : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult> AddCategory(AddCategoryRequest addCategoryRequest)
+    {
+        var category = new Category
+        {
+            Name = addCategoryRequest.Name,
+        };
+        await toDoListDbContext.Category.AddAsync(category);
+        await toDoListDbContext.SaveChangesAsync();
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PerformToDo(PerformTodoRequest performTodoRequest)
+    {
+        var todoToPerform = await toDoListDbContext.ToDo.FindAsync(performTodoRequest.Id);
+
+        if (todoToPerform != null)
+        {
+            todoToPerform.IsPerformed = true;
+            await toDoListDbContext.SaveChangesAsync();
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UnperformToDo(PerformTodoRequest performTodoRequest)
+    {
+        var todoToUnperform = await toDoListDbContext.ToDo.FindAsync(performTodoRequest.Id);
+
+        if (todoToUnperform != null)
+        {
+            todoToUnperform.IsPerformed = false;
+            await toDoListDbContext.SaveChangesAsync();
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
     public async Task<IActionResult> DeleteToDo(DeleteToDoRequest deleteToDoRequest)
     {
         var todoToDelete = await toDoListDbContext.ToDo.FindAsync(deleteToDoRequest.Id);
 
         if (todoToDelete != null)
         {
-             toDoListDbContext.Remove(todoToDelete);
-             await toDoListDbContext.SaveChangesAsync();
+            toDoListDbContext.Remove(todoToDelete);
+            await toDoListDbContext.SaveChangesAsync();
         }
+
         return RedirectToAction("Index");
     }
 
