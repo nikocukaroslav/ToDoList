@@ -8,6 +8,5 @@ public class ToDo
     public string Task { get; set; }
     public bool IsPerformed { get; set; } = false;
     public DateTime? DateToPerform { get; set; }
-    public Guid CategoryId { get; set; }
-    public Category Category { get; set; }
+    public string CategoryName { get; set; }
 }

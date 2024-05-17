@@ -12,7 +12,7 @@ using ToDoList.Data;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ToDoListDbContext))]
-    [Migration("20240508191847_Initial")]
+    [Migration("20240517181610_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -46,8 +46,12 @@ namespace ToDoList.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DateToPerform")
                         .HasColumnType("datetime2");
@@ -68,13 +72,9 @@ namespace ToDoList.Migrations
 
             modelBuilder.Entity("ToDoList.Models.Domain.ToDo", b =>
                 {
-                    b.HasOne("ToDoList.Models.Domain.Category", "Category")
+                    b.HasOne("ToDoList.Models.Domain.Category", null)
                         .WithMany("ToDos")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
+                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("ToDoList.Models.Domain.Category", b =>

@@ -43,8 +43,12 @@ namespace ToDoList.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DateToPerform")
                         .HasColumnType("datetime2");
@@ -65,13 +69,9 @@ namespace ToDoList.Migrations
 
             modelBuilder.Entity("ToDoList.Models.Domain.ToDo", b =>
                 {
-                    b.HasOne("ToDoList.Models.Domain.Category", "Category")
+                    b.HasOne("ToDoList.Models.Domain.Category", null)
                         .WithMany("ToDos")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
+                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("ToDoList.Models.Domain.Category", b =>

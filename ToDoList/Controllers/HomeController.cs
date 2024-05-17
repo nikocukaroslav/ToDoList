@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Xml;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
@@ -11,35 +12,34 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly ToDoListDbContext toDoListDbContext;
+    private IToDoListXmlStorage toDoListXmlStorage;
 
-    public HomeController(ILogger<HomeController> logger, ToDoListDbContext toDoListDbContext)
+    public HomeController(ILogger<HomeController> logger, ToDoListDbContext toDoListDbContext,
+        IToDoListXmlStorage toDoListXmlStorage)
     {
         _logger = logger;
         this.toDoListDbContext = toDoListDbContext;
+        this.toDoListXmlStorage = toDoListXmlStorage;
     }
 
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        List<ToDo> todos = await toDoListDbContext.ToDo.ToListAsync();
+        List<Category> categories = await toDoListDbContext.Category.ToListAsync();
+        List<ToDo> todosXml =
+            toDoListXmlStorage.LoadAllToDosXml(
+                "C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml");
+        List<Category> categoriesXml =
+            toDoListXmlStorage.LoadAllCategories(
+                "C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml");
+
         var model = new HomePageViewModel
         {
-            Categories = await toDoListDbContext.Category.ToListAsync(),
-            ToDos = await toDoListDbContext.ToDo.Include(x => x.Category).ToListAsync(),
-        };
-        return View(model);
-    }
-    
-    [HttpPost]
-    public async Task<IActionResult> Index(FilterToDosByCategory filterToDosByCategory)
-    {
-        var filteredToDos = await toDoListDbContext.ToDo
-            .Where(x => x.CategoryId == filterToDosByCategory.CategoryId)
-            .ToListAsync();
-        
-        var model = new HomePageViewModel
-        {
-            Categories = await toDoListDbContext.Category.ToListAsync(), 
-            ToDos = filteredToDos,
+            Categories = categories,
+            CategoriesXml = categoriesXml,
+            ToDos = todos,
+            ToDosXml = todosXml,
         };
         return View(model);
     }
@@ -50,7 +50,7 @@ public class HomeController : Controller
         var todo = new ToDo
         {
             Task = addToDoRequest.Task,
-            CategoryId = addToDoRequest.CategoryId,
+            CategoryName = addToDoRequest.CategoryName,
             DateToPerform = addToDoRequest.DateToPerform,
         };
         await toDoListDbContext.ToDo.AddAsync(todo);
@@ -116,5 +116,78 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    [HttpPost]
+    public IActionResult AddToDoXml(AddToDoRequest addToDoRequest)
+    {
+        XmlDocument document = new XmlDocument();
+
+        document.Load("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml");
+
+        XmlElement root = (XmlElement)document.SelectSingleNode("/database/todos")!;
+
+        if (root != null)
+        {
+            XmlElement todo = document.CreateElement("todo");
+            XmlElement id = document.CreateElement("id");
+            XmlElement task = document.CreateElement("task");
+            XmlElement isPerformed = document.CreateElement("isPerformed");
+            XmlElement categoryName = document.CreateElement("categoryName");
+            
+
+            id.InnerText = addToDoRequest.Id;
+            task.InnerText = addToDoRequest.Task;
+            isPerformed.InnerText = addToDoRequest.IsPerformed.ToString();
+            categoryName.InnerText = addToDoRequest.CategoryName;
+            
+            todo.AppendChild(id);
+            todo.AppendChild(task);
+            todo.AppendChild(isPerformed);
+            todo.AppendChild(categoryName);
+
+            if (addToDoRequest.DateToPerform != null)
+            {
+                XmlElement? dateToPerform = document.CreateElement("dateToPerform");
+                dateToPerform.InnerText = addToDoRequest.DateToPerform.ToString();
+                todo.AppendChild(dateToPerform);
+            }
+            
+            root.AppendChild(todo);
+            toDoListXmlStorage.SaveXml("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml",
+                document);
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult AddCategoryXml(AddCategoryRequest addCategoryRequest)
+    {
+        XmlDocument document = new XmlDocument();
+
+        document.Load("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml");
+
+        XmlElement root = (XmlElement)document.SelectSingleNode("/database/categories")!;
+
+        if (root != null)
+        {
+            XmlElement category = document.CreateElement("category");
+            XmlElement id = document.CreateElement("id");
+            XmlElement name = document.CreateElement("name");
+
+            id.InnerText = addCategoryRequest.Id;
+            name.InnerText = addCategoryRequest.Name;
+
+            category.AppendChild(id);
+            category.AppendChild(name);
+
+            root.AppendChild(category);
+
+            toDoListXmlStorage.SaveXml("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml",
+                document);
+        }
+
+        return RedirectToAction("Index");
     }
 }

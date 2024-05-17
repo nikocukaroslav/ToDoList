@@ -1,0 +1,44 @@
+<database>
+  <categories>
+    <category>
+      <id>3f9f0332-4555-4264-a134-57c48cf47305</id>
+      <name>dfdfdf</name>
+    </category>
+    <category>
+      <id>4cf8b5dc-af68-4291-8c14-42308fcff999</id>
+      <name>Study</name>
+    </category>
+    <category>
+      <id>87618e2d-2049-4315-98ef-c542ecb7efc9</id>
+      <name>Vacation</name>
+    </category>
+  </categories>
+  <todos>
+    <todo>
+      <id>0c929fa2-8f1c-4702-8f11-810dcdc852f4</id>
+      <task>Sugar</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>Study</categoryName>
+      <dateToPerform>5/29/2024 12:00:00 AM</dateToPerform>
+    </todo>
+    <todo>
+      <id>6af1081e-ac23-4eb6-9f67-2604e2a37d0f</id>
+      <task>Sugar</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>dfdfdf</categoryName>
+    </todo>
+    <todo>
+      <id>f4103e04-4a70-4e0e-950f-994252b07585</id>
+      <task>Sugar</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>Work</categoryName>
+    </todo>
+    <todo>
+      <id>be6f292f-e884-4740-bdcf-784bd8d1793e</id>
+      <task>Sugar</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>Study</categoryName>
+      <dateToPerform>5/29/2024 12:00:00 AM</dateToPerform>
+    </todo>
+  </todos>
+</database>

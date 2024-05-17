@@ -31,7 +31,8 @@ namespace ToDoList.Migrations
                     Task = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsPerformed = table.Column<bool>(type: "bit", nullable: false),
                     DateToPerform = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -40,8 +41,7 @@ namespace ToDoList.Migrations
                         name: "FK_ToDo_Category_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

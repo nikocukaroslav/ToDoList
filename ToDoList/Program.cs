@@ -1,3 +1,4 @@
+using System.Xml;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
 
@@ -8,6 +9,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ToDoListDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ToDoListDbConnectionString")));
+
+builder.Services.AddSingleton<IToDoListXmlStorage,ToDoListXmlStrorage>();
+
 
 var app = builder.Build();
 
