@@ -240,11 +240,33 @@
         background-color: #242424;
     }
 
+    .changeStorage {
+        height: 2rem;
+        width: 20%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .changeStorage select {
+        width: 100%;
+        border-top: none;
+        border-left: none;
+        border-radius: unset;
+    }
+
 </style>
 
 @model HomePageViewModel
 
+
 <div class="main">
+    <form method="post" class="changeStorage">
+        <select>
+            <option>DbStorage</option>
+            <option>XmlStorage</option>
+        </select>
+    </form>
     <div class="addCategoryButton">
         <span>Add category</span>
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="plus" viewBox="0 0 16 16">
@@ -271,7 +293,7 @@
         <select asp-for="AddToDoRequest.CategoryName" required>
             @foreach (var category in Model.CategoriesXml)
             {
-                <option value="@category.Name">@category.Name</option>
+            <option value="@category.Name">@category.Name</option>
             }
         </select>
         <input type="date" class="date" asp-for="AddToDoRequest.DateToPerform"/>
@@ -280,59 +302,59 @@
     <ul>
         @foreach (var todo in Model.ToDosXml.OrderBy(x => x.IsPerformed))
         {
-            <li class="todoContainer @(todo.IsPerformed ? "darkgray" : "")">
-                <div class="todo">
+        <li class="todoContainer @(todo.IsPerformed ? "darkgray" : "")">
+            <div class="todo">
 
-                    <form class="checkboxForm" method="post">
-                        <input type="hidden" asp-for="PerformTodoRequest.Id" value="@todo.Id"/>
-                        @if (!todo.IsPerformed)
-                        {
-                            <button class="checkbox" asp-action="PerformToDo">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkboxIcon"
-                                     viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                </svg>
-                            </button>
-                        }
-                        else
-                        {
-                            <button class="checkbox" asp-action="UnperformToDo">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                     class="checkboxIcon checkboxIconPerformed" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                </svg>
-                            </button>
-                        }
-                    </form>
-                    <span class="@(todo.IsPerformed ? "completed" : "")">@todo.Task</span>
-                </div>
-                <form method="post" asp-action="DeleteToDo">
-                    <input type="hidden" asp-for="DeleteToDoRequest.Id" value="@todo.Id"/>
-                    <button class="trashButton">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="trash"
+                <form class="checkboxForm" method="post">
+                    <input type="hidden" asp-for="PerformTodoRequest.Id" value="@todo.Id"/>
+                    @if (!todo.IsPerformed)
+                    {
+                    <button class="checkbox" asp-action="PerformToDoXml">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkboxIcon"
                              viewBox="0 0 16 16">
-                            <path
-                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                            <path
-                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                         </svg>
                     </button>
-                </form>
-                <div class="todoDescription">
-                    <span>@todo.CategoryName</span>
-                    @if (todo.DateToPerform != null)
-                    {
-                        <span>@todo.DateToPerform?.ToShortDateString()</span>
                     }
-                </div>
-            </li>
+                    else
+                    {
+                    <button class="checkbox" asp-action="UnperformToDoXml">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                             class="checkboxIcon checkboxIconPerformed" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        </svg>
+                    </button>
+                    }
+                </form>
+                <span class="@(todo.IsPerformed ? "completed" : "")">@todo.Task</span>
+            </div>
+            <form method="post" asp-action="DeleteToDoXml">
+                <input type="hidden" asp-for="DeleteToDoRequest.Id" value="@todo.Id"/>
+                <button class="trashButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="trash"
+                         viewBox="0 0 16 16">
+                        <path
+                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                        <path
+                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>
+                </button>
+            </form>
+            <div class="todoDescription">
+                <span>@todo.CategoryName</span>
+                @if (todo.DateToPerform != null)
+                {
+                <span>@todo.DateToPerform?.ToShortDateString()</span>
+                }
+            </div>
+        </li>
         }
     </ul>
 </div>
 
 @section Scripts
 {
-    <script>
+<script>
     const todoContainers = document.querySelectorAll(".todoContainer");
     const addCategoryButton = document.querySelector(".addCategoryButton");
     const addCategoryForm = document.querySelector(".AddCategoryForm");

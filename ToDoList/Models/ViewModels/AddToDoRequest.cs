@@ -4,7 +4,7 @@ namespace ToDoList.Models;
 
 public class AddToDoRequest
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     public string Task { get; set; }
     public DateTime? DateToPerform { get; set; }
     public bool IsPerformed { get; set; } = false;

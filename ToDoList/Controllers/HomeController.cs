@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
 using ToDoList.Models;
 using ToDoList.Models.Domain;
+using System.Linq;
 
 namespace ToDoList.Controllers;
 
@@ -23,8 +24,10 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(ChangeStorageRequest changeStorageRequest)
     {
+        
+        
         List<ToDo> todos = await toDoListDbContext.ToDo.ToListAsync();
         List<Category> categories = await toDoListDbContext.Category.ToListAsync();
         List<ToDo> todosXml =
@@ -134,13 +137,12 @@ public class HomeController : Controller
             XmlElement task = document.CreateElement("task");
             XmlElement isPerformed = document.CreateElement("isPerformed");
             XmlElement categoryName = document.CreateElement("categoryName");
-            
 
-            id.InnerText = addToDoRequest.Id;
+            id.InnerText = addToDoRequest.Id.ToString();
             task.InnerText = addToDoRequest.Task;
             isPerformed.InnerText = addToDoRequest.IsPerformed.ToString();
             categoryName.InnerText = addToDoRequest.CategoryName;
-            
+
             todo.AppendChild(id);
             todo.AppendChild(task);
             todo.AppendChild(isPerformed);
@@ -152,7 +154,7 @@ public class HomeController : Controller
                 dateToPerform.InnerText = addToDoRequest.DateToPerform.ToString();
                 todo.AppendChild(dateToPerform);
             }
-            
+
             root.AppendChild(todo);
             toDoListXmlStorage.SaveXml("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml",
                 document);
@@ -184,6 +186,74 @@ public class HomeController : Controller
 
             root.AppendChild(category);
 
+            toDoListXmlStorage.SaveXml("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml",
+                document);
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult PerformToDoXml(PerformTodoRequest performTodoRequest)
+    {
+        XmlDocument document = new XmlDocument();
+        document.Load("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml");
+
+        string idString = performTodoRequest.Id.ToString();
+
+        // Find the 'todo' node with the specified ID attribute
+        XmlNode todoNode = document.SelectSingleNode($"/database/todos/todo[id='{idString}']")!;
+
+        if (todoNode != null)
+        {
+            XmlElement isPerformed = (XmlElement)todoNode.SelectSingleNode("isPerformed")!;
+            if (isPerformed != null)
+            {
+                isPerformed.InnerText = true.ToString();
+                document.Save("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml");
+            }
+        }
+
+        return RedirectToAction("Index");
+    }
+
+
+    [HttpPost]
+    public IActionResult UnPerformToDoXml(PerformTodoRequest performTodoRequest)
+    {
+        XmlDocument document = new XmlDocument();
+        document.Load("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml");
+
+        string idString = performTodoRequest.Id.ToString();
+
+        XmlNode todoNode = document.SelectSingleNode($"/database/todos/todo[id='{idString}']")!;
+
+        if (todoNode != null)
+        {
+            XmlElement isPerformed = (XmlElement)todoNode.SelectSingleNode("isPerformed")!;
+            if (isPerformed != null)
+            {
+                isPerformed.InnerText = false.ToString();
+                document.Save("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml");
+            }
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult DeleteToDoXml(DeleteToDoRequest deleteToDoRequest)
+    {
+        XmlDocument document = new XmlDocument();
+        document.Load("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml");
+
+        string idString = deleteToDoRequest.Id.ToString();
+
+        XmlNode? todoToDelete = document.SelectSingleNode($"/database/todos/todo[id='{idString}']");
+
+        if (todoToDelete != null)
+        {
+            todoToDelete.ParentNode?.RemoveChild(todoToDelete);
             toDoListXmlStorage.SaveXml("C:\\Users\\Ярик\\Desktop\\Bootcamp\\ToDoListMVC\\ToDoList\\Data\\Database.xml",
                 document);
         }

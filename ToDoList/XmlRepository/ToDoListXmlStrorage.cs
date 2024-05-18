@@ -15,14 +15,16 @@ namespace ToDoList.Data
             if (nodes != null)
                 foreach (XmlNode node in nodes)
                 {
+                    var id = node.SelectSingleNode("id")?.InnerText;
                     var task = node.SelectSingleNode("task")?.InnerText;
                     var categoryName = node.SelectSingleNode("categoryName")?.InnerText;
                     var isPerformed = node.SelectSingleNode("isPerformed")?.InnerText;
                     var dateToPerform = node.SelectSingleNode("dateToPerform")?.InnerText;
-                    if (task != null && categoryName != null && isPerformed != null)
+                    if (task != null && categoryName != null && isPerformed != null && id != null)
                     {
                         ToDo todo = new ToDo
                         {
+                            Id = Guid.Parse(id),
                             Task = task,
                             CategoryName =categoryName,
                             IsPerformed = bool.Parse(isPerformed),
