@@ -4,23 +4,46 @@
       <id>bfac4a61-1d83-49b4-8dd2-95ad7179dfc7</id>
       <name>Study</name>
     </category>
+    <category>
+      <id>16673ea7-8ef9-4f72-9dff-46d2952f56c8</id>
+      <name>Study</name>
+    </category>
   </categories>
   <todos>
     <todo>
-      <id>923ed858-14e2-46e2-a0f5-a6183e825fd6</id>
-      <task>qweqweqweeeeeeeeeeeeeeeeeeeeeeeeeeee</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>Study</categoryName>
-    </todo>
-    <todo>
-      <id>56028809-dbb7-40b2-9bb3-471a94abb718</id>
-      <task>asdads</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>Study</categoryName>
-    </todo>
-    <todo>
       <id>bfae7801-3429-4f08-a1fa-f2901726c356</id>
       <task>asdads</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>Study</categoryName>
+    </todo>
+    <todo>
+      <id>4492d168-e571-442e-8ed9-dba4fa5375ad</id>
+      <task>asdads</task>
+      <isPerformed>True</isPerformed>
+      <categoryName>Study</categoryName>
+    </todo>
+    <todo>
+      <id>0d17f1d4-69c6-441f-b419-63488fa0a3e8</id>
+      <task>asdads</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>Study</categoryName>
+      <dateToPerform>6/5/2024 12:00:00 AM</dateToPerform>
+    </todo>
+    <todo>
+      <id>e854374e-c287-46fa-b7a5-4122b3dd32e3</id>
+      <task>asdads</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>Study</categoryName>
+    </todo>
+    <todo>
+      <id>1ffd0162-a426-49dc-8f1c-4b63da0dfe53</id>
+      <task>asdsad</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>Study</categoryName>
+    </todo>
+    <todo>
+      <id>3d4d2492-20c1-41bc-8011-b600104119bd</id>
+      <task>Sugar</task>
       <isPerformed>False</isPerformed>
       <categoryName>Study</categoryName>
     </todo>
