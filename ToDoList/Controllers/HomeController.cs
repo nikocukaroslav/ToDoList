@@ -29,17 +29,20 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult ChangeStorage(ChangeStorageRequest changeStorageRequest)
     {
-        TempData["StorageName"] = changeStorageRequest.StorageName;
-        return RedirectToAction("Index", changeStorageRequest);
+        HttpContext.Session.SetString("StorageName", changeStorageRequest.StorageName);
+        
+        return RedirectToAction("Index");
     }
 
 
     [HttpGet]
-    public async Task<IActionResult> Index(ChangeStorageRequest changeStorageRequest)
+    public async Task<IActionResult> Index()
     {
+        var storageName = HttpContext.Session.GetString("StorageName");
+        
         List<ToDo> todos;
         List<Category> categories;
-        if (changeStorageRequest.StorageName == "DbStorage")
+        if (storageName == "DbStorage")
         {
             todos = await todoRepository.GetAll();
             categories = await categoryRepository.GetAll();
@@ -61,12 +64,11 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddToDo(AddToDoRequest addToDoRequest,
-        ChangeStorageRequest changeStorageRequest)
+    public async Task<IActionResult> AddToDo(AddToDoRequest addToDoRequest)
     {
-        changeStorageRequest.StorageName = TempData.Peek("StorageName")?.ToString();
+        var storageName = HttpContext.Session.GetString("StorageName");
 
-        if (changeStorageRequest.StorageName == "DbStorage")
+        if (storageName == "DbStorage")
         {
             var todo = new ToDo
             {
@@ -117,22 +119,21 @@ public class HomeController : Controller
             }
         }
 
-        return RedirectToAction("Index", changeStorageRequest);
+        return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddCategory(AddCategoryRequest addCategoryRequest,
-        ChangeStorageRequest changeStorageRequest)
+    public async Task<IActionResult> AddCategory(AddCategoryRequest addCategoryRequest)
     {
-        changeStorageRequest.StorageName = TempData["StorageName"]?.ToString();
-        if (changeStorageRequest.StorageName == "DbStorage")
+        var storageName = HttpContext.Session.GetString("StorageName");
+        
+        if (storageName == "DbStorage")
         {
             var category = new Category
             {
                 Name = addCategoryRequest.Name,
             };
             await categoryRepository.Add(category);
-
         }
         else
         {
@@ -162,23 +163,23 @@ public class HomeController : Controller
             }
         }
 
-        return RedirectToAction("Index", changeStorageRequest);
+        return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public async Task<IActionResult> PerformToDo(PerformTodoRequest performTodoRequest,
-        ChangeStorageRequest changeStorageRequest)
+    public async Task<IActionResult> PerformToDo(PerformTodoRequest performTodoRequest)
     {
-        changeStorageRequest.StorageName = TempData["StorageName"]?.ToString();
-        if (changeStorageRequest.StorageName == "DbStorage")
+        var storageName = HttpContext.Session.GetString("StorageName");
+        
+        if (storageName == "DbStorage")
         {
             var perfromToDo = new ToDo
             {
                 Id = performTodoRequest.Id,
                 IsPerformed = true,
             };
-            
-           await todoRepository.ChangePerformed(perfromToDo);
+
+            await todoRepository.ChangePerformed(perfromToDo);
         }
         else
         {
@@ -201,15 +202,15 @@ public class HomeController : Controller
         }
 
 
-        return RedirectToAction("Index", changeStorageRequest);
+        return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public async Task<IActionResult> UnperformToDo(PerformTodoRequest performTodoRequest,
-        ChangeStorageRequest changeStorageRequest)
+    public async Task<IActionResult> UnperformToDo(PerformTodoRequest performTodoRequest)
     {
-        changeStorageRequest.StorageName = TempData["StorageName"]?.ToString();
-        if (changeStorageRequest.StorageName == "DbStorage")
+        var storageName = HttpContext.Session.GetString("StorageName");
+        
+        if (storageName == "DbStorage")
         {
             var perfromToDo = new ToDo
             {
@@ -239,25 +240,25 @@ public class HomeController : Controller
             }
         }
 
-        return RedirectToAction("Index", changeStorageRequest);
+        return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteToDo(DeleteToDoRequest deleteToDoRequest,
-        ChangeStorageRequest changeStorageRequest)
+    public async Task<IActionResult> DeleteToDo(DeleteToDoRequest deleteToDoRequest)
     {
-        changeStorageRequest.StorageName = TempData["StorageName"]?.ToString();
-        if (changeStorageRequest.StorageName == "DbStorage")
+        var storageName = HttpContext.Session.GetString("StorageName");
+        
+        if (storageName == "DbStorage")
         {
             var todoToDelete = new ToDo
             {
                 Id = deleteToDoRequest.Id,
             };
 
-        if (todoToDelete != null)
-        {
-            await todoRepository.Delete(todoToDelete);
-        }
+            if (todoToDelete != null)
+            {
+                await todoRepository.Delete(todoToDelete);
+            }
         }
         else
         {
@@ -277,7 +278,6 @@ public class HomeController : Controller
             }
         }
 
-        return RedirectToAction("Index", changeStorageRequest);
+        return RedirectToAction("Index");
     }
-
 }

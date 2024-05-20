@@ -273,11 +273,15 @@
 
 @model HomePageViewModel
 
+@{
+    var storageName = Context.Session.GetString("StorageName");
+}
+
 <div class="main">
     <form method="post" asp-action="ChangeStorage" class="changeStorage">
         <select asp-for="ChangeStorageRequest.StorageName">
-            <option selected="@(TempData["StorageName"]?.ToString() == "DbStorage")" value="DbStorage">DbStorage</option>
-            <option selected="@(TempData["StorageName"]?.ToString() == "XmlStorage")" value="XmlStorage">XmlStorage</option>
+            <option selected="@(storageName == "XmlStorage")" value="XmlStorage">XmlStorage</option>
+            <option selected="@(storageName == "DbStorage")" value="DbStorage">DbStorage</option>
         </select>
         <button>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check"

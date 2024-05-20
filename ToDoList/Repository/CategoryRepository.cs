@@ -27,7 +27,7 @@ public class CategoryRepository : ICategoryRepository
     {
         var connection = toDoListDbContext.CreateConnection();
 
-        var sql = "INSERT INTO (Id Name) VALUES (@Id @Name)";
+        var sql = "INSERT INTO Category (Id, Name) VALUES (@Id, @Name)";
 
         await connection.ExecuteAsync(sql, category);
     }

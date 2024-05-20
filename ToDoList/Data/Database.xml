@@ -8,51 +8,17 @@
       <id>16673ea7-8ef9-4f72-9dff-46d2952f56c8</id>
       <name>Study</name>
     </category>
+    <category>
+      <id>261a5628-e476-4355-858f-87f66aa979b5</id>
+      <name>Study</name>
+    </category>
   </categories>
   <todos>
-    <todo>
-      <id>bfae7801-3429-4f08-a1fa-f2901726c356</id>
-      <task>asdads</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>Study</categoryName>
-    </todo>
-    <todo>
-      <id>4492d168-e571-442e-8ed9-dba4fa5375ad</id>
-      <task>asdads</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>Study</categoryName>
-    </todo>
-    <todo>
-      <id>0d17f1d4-69c6-441f-b419-63488fa0a3e8</id>
-      <task>asdads</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>Study</categoryName>
-      <dateToPerform>6/5/2024 12:00:00 AM</dateToPerform>
-    </todo>
     <todo>
       <id>e854374e-c287-46fa-b7a5-4122b3dd32e3</id>
       <task>asdads</task>
       <isPerformed>False</isPerformed>
       <categoryName>Study</categoryName>
-    </todo>
-    <todo>
-      <id>1ffd0162-a426-49dc-8f1c-4b63da0dfe53</id>
-      <task>asdsad</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>Study</categoryName>
-    </todo>
-    <todo>
-      <id>3d4d2492-20c1-41bc-8011-b600104119bd</id>
-      <task>Sugar</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>Study</categoryName>
-    </todo>
-    <todo>
-      <id>51159dfd-76ff-4bcb-b9b1-84a356a745b4</id>
-      <task>Sugar</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>Vacation</categoryName>
-      <dateToPerform>5/28/2024 12:00:00 AM</dateToPerform>
     </todo>
     <todo>
       <id>2bac1fb8-5178-452d-95e5-cfe9703cf57a</id>
@@ -64,41 +30,21 @@
     <todo>
       <id>593fb1f4-e029-47e1-bec7-48a77ed3fb31</id>
       <task>asdsad</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>Study</categoryName>
-      <dateToPerform>5/28/2024 12:00:00 AM</dateToPerform>
-    </todo>
-    <todo>
-      <id>135743fd-4ca1-4cb1-8d04-a1ec8d944df6</id>
-      <task>asdsad</task>
       <isPerformed>False</isPerformed>
       <categoryName>Study</categoryName>
-    </todo>
-    <todo>
-      <id>54e2cf5f-e3a8-45b9-9946-b30f09b52404</id>
-      <task>asdsad</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>Other</categoryName>
       <dateToPerform>5/28/2024 12:00:00 AM</dateToPerform>
-    </todo>
-    <todo>
-      <id>53d4ee3c-0db5-4ac3-9bbe-8f0a2699f4db</id>
-      <task>asdsad</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>Vacation</categoryName>
-      <dateToPerform>5/30/2024 12:00:00 AM</dateToPerform>
     </todo>
     <todo>
       <id>19d43d3a-e7f5-4401-8f32-964bb05954cb</id>
       <task>asdads</task>
-      <isPerformed>False</isPerformed>
+      <isPerformed>True</isPerformed>
       <categoryName>Other</categoryName>
       <dateToPerform>6/5/2024 12:00:00 AM</dateToPerform>
     </todo>
     <todo>
       <id>a27153ee-932d-423e-a709-85b207a360e3</id>
       <task>Sugar</task>
-      <isPerformed>False</isPerformed>
+      <isPerformed>True</isPerformed>
       <categoryName>Other</categoryName>
       <dateToPerform>5/29/2024 12:00:00 AM</dateToPerform>
     </todo>
@@ -109,32 +55,10 @@
       <categoryName>Study</categoryName>
     </todo>
     <todo>
-      <id>3341242d-398c-4ff3-9295-501c80d504e0</id>
-      <task>Sugar</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>Vacation</categoryName>
-      <dateToPerform>5/28/2024 12:00:00 AM</dateToPerform>
-    </todo>
-    <todo>
-      <id>bb9e0c44-d4dc-410d-817b-f95a3c53815c</id>
+      <id>c5d42656-8ed2-4dab-bc32-5d40d82b88e0</id>
       <task>asdads</task>
       <isPerformed>False</isPerformed>
       <categoryName>Study</categoryName>
-      <dateToPerform>5/30/2024 12:00:00 AM</dateToPerform>
-    </todo>
-    <todo>
-      <id>0011b66b-5725-4ed2-9dfe-d4b3202228ee</id>
-      <task>Sugar</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>Other</categoryName>
-      <dateToPerform>5/27/2024 12:00:00 AM</dateToPerform>
-    </todo>
-    <todo>
-      <id>d4801d2c-b85e-45db-8a76-5dadfcf1a957</id>
-      <task>Sugar</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>Vacation</categoryName>
-      <dateToPerform>5/27/2024 12:00:00 AM</dateToPerform>
     </todo>
   </todos>
 </database>

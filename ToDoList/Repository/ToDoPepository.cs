@@ -37,7 +37,7 @@ public class ToDoPepository : IToDoRepository
     {
         var connection = toDoListDbContext.CreateConnection();
         
-        var sql = "UPDATE ToDo" + "SET IsPerformed = @IsPerformed" + "WHERE Id = @Id";
+        var sql = "UPDATE ToDo SET IsPerformed = @IsPerformed WHERE Id = @Id";
 
         await connection.ExecuteAsync(sql, todo);
     }

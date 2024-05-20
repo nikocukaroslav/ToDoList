@@ -4,15 +4,19 @@ using ToDoList.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddSession();
+
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<ToDoListDbContext>();
-builder.Services.AddSingleton<IToDoRepository,ToDoPepository>();
-builder.Services.AddSingleton<ICategoryRepository,CategoryRepository>();
+builder.Services.AddSingleton<IToDoRepository, ToDoPepository>();
+builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
-builder.Services.AddSingleton<IToDoListXmlStorage,ToDoListXmlStrorage>();
-
+builder.Services.AddSingleton<IToDoListXmlStorage, ToDoListXmlStrorage>();
 
 var app = builder.Build();
 
@@ -28,6 +32,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 
