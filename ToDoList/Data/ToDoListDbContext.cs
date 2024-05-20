@@ -1,14 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using ToDoList.Models.Domain;
 
 namespace ToDoList.Data;
 
-public class ToDoListDbContext : DbContext
+public class ToDoListDbContext
 {
-    public ToDoListDbContext(DbContextOptions<ToDoListDbContext> options) : base(options)
+    private readonly IConfiguration configuration;
+    private readonly string? connectionString;
+
+    public ToDoListDbContext(IConfiguration configuration)
     {
+        this.configuration = configuration;
+        connectionString = this.configuration.GetConnectionString("ToDoListDbConnectionString");
     }
 
-    public DbSet<ToDo> ToDo { get; set; }
-    public DbSet<Category> Category { get; set; }
+    public IDbConnection CreateConnection()
+    {
+        return new SqlConnection(connectionString);
+    }
 }

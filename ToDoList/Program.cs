@@ -7,8 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<ToDoListDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ToDoListDbConnectionString")));
+builder.Services.AddSingleton<ToDoListDbContext>();
+builder.Services.AddSingleton<IToDoRepository,ToDoPepository>();
+builder.Services.AddSingleton<ICategoryRepository,CategoryRepository>();
 
 builder.Services.AddSingleton<IToDoListXmlStorage,ToDoListXmlStrorage>();
 

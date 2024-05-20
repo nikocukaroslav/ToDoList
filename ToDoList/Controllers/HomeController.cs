@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Xml;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
 using ToDoList.Models;
 using ToDoList.Models.Domain;
@@ -14,13 +13,17 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly ToDoListDbContext toDoListDbContext;
     private IToDoListXmlStorage toDoListXmlStorage;
+    private IToDoRepository todoRepository;
+    private ICategoryRepository categoryRepository;
 
     public HomeController(ILogger<HomeController> logger, ToDoListDbContext toDoListDbContext,
-        IToDoListXmlStorage toDoListXmlStorage)
+        IToDoListXmlStorage toDoListXmlStorage, IToDoRepository todoRepository, ICategoryRepository categoryRepository)
     {
         _logger = logger;
         this.toDoListDbContext = toDoListDbContext;
         this.toDoListXmlStorage = toDoListXmlStorage;
+        this.todoRepository = todoRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     [HttpPost]
@@ -38,8 +41,8 @@ public class HomeController : Controller
         List<Category> categories;
         if (changeStorageRequest.StorageName == "DbStorage")
         {
-            todos = await toDoListDbContext.ToDo.ToListAsync();
-            categories = await toDoListDbContext.Category.ToListAsync();
+            todos = await todoRepository.GetAll();
+            categories = await categoryRepository.GetAll();
         }
         else
         {
@@ -61,18 +64,18 @@ public class HomeController : Controller
     public async Task<IActionResult> AddToDo(AddToDoRequest addToDoRequest,
         ChangeStorageRequest changeStorageRequest)
     {
-        changeStorageRequest.StorageName = TempData["StorageName"]?.ToString();
+        changeStorageRequest.StorageName = TempData.Peek("StorageName")?.ToString();
 
         if (changeStorageRequest.StorageName == "DbStorage")
         {
             var todo = new ToDo
             {
+                Id = addToDoRequest.Id,
                 Task = addToDoRequest.Task,
                 CategoryName = addToDoRequest.CategoryName,
                 DateToPerform = addToDoRequest.DateToPerform,
             };
-            await toDoListDbContext.ToDo.AddAsync(todo);
-            await toDoListDbContext.SaveChangesAsync();
+            await todoRepository.Add(todo);
         }
         else
         {
@@ -128,8 +131,8 @@ public class HomeController : Controller
             {
                 Name = addCategoryRequest.Name,
             };
-            await toDoListDbContext.Category.AddAsync(category);
-            await toDoListDbContext.SaveChangesAsync();
+            await categoryRepository.Add(category);
+
         }
         else
         {
@@ -169,13 +172,13 @@ public class HomeController : Controller
         changeStorageRequest.StorageName = TempData["StorageName"]?.ToString();
         if (changeStorageRequest.StorageName == "DbStorage")
         {
-            var todoToPerform = await toDoListDbContext.ToDo.FindAsync(performTodoRequest.Id);
-
-            if (todoToPerform != null)
+            var perfromToDo = new ToDo
             {
-                todoToPerform.IsPerformed = true;
-                await toDoListDbContext.SaveChangesAsync();
-            }
+                Id = performTodoRequest.Id,
+                IsPerformed = true,
+            };
+            
+           await todoRepository.ChangePerformed(perfromToDo);
         }
         else
         {
@@ -208,13 +211,13 @@ public class HomeController : Controller
         changeStorageRequest.StorageName = TempData["StorageName"]?.ToString();
         if (changeStorageRequest.StorageName == "DbStorage")
         {
-            var todoToUnperform = await toDoListDbContext.ToDo.FindAsync(performTodoRequest.Id);
-
-            if (todoToUnperform != null)
+            var perfromToDo = new ToDo
             {
-                todoToUnperform.IsPerformed = false;
-                await toDoListDbContext.SaveChangesAsync();
-            }
+                Id = performTodoRequest.Id,
+                IsPerformed = false,
+            };
+
+            await todoRepository.ChangePerformed(perfromToDo);
         }
         else
         {
@@ -246,13 +249,15 @@ public class HomeController : Controller
         changeStorageRequest.StorageName = TempData["StorageName"]?.ToString();
         if (changeStorageRequest.StorageName == "DbStorage")
         {
-            var todoToDelete = await toDoListDbContext.ToDo.FindAsync(deleteToDoRequest.Id);
-
-            if (todoToDelete != null)
+            var todoToDelete = new ToDo
             {
-                toDoListDbContext.Remove(todoToDelete);
-                await toDoListDbContext.SaveChangesAsync();
-            }
+                Id = deleteToDoRequest.Id,
+            };
+
+        if (todoToDelete != null)
+        {
+            await todoRepository.Delete(todoToDelete);
+        }
         }
         else
         {
@@ -275,9 +280,4 @@ public class HomeController : Controller
         return RedirectToAction("Index", changeStorageRequest);
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
 }
