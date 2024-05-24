@@ -280,8 +280,8 @@
 <div class="main">
     <form method="post" asp-action="ChangeStorage" class="changeStorage">
         <select asp-for="ChangeStorageRequest.StorageName">
-            <option selected="@(storageName == "XmlStorage")" value="XmlStorage">XmlStorage</option>
-            <option selected="@(storageName == "DbStorage")" value="DbStorage">DbStorage</option>
+            <option selected="@(storageName == "XmlStorage")" value="XmlStorage">Xml Storage</option>
+            <option selected="@(storageName == "DbStorage")" value="DbStorage">Db Storage</option>
         </select>
         <button>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check"
@@ -330,7 +330,7 @@
                 <div class="todo">
 
                     <form class="checkboxForm" method="post">
-                        <input type="hidden" asp-for="PerformTodoRequest.Id" value="@todo.Id"/>
+                        <input type="hidden" asp-for="HandleTodoRequest.Id" value="@todo.Id"/>
                         <input type="hidden" asp-for="ChangeStorageRequest" value="@todo."/>
                         @if (!todo.IsPerformed)
                         {

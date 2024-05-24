@@ -13,10 +13,11 @@ builder.Services.AddSession();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<ToDoListDbContext>();
+builder.Services.AddSingleton<XmlStorageContext>();
 builder.Services.AddSingleton<IToDoRepository, ToDoPepository>();
 builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
-builder.Services.AddSingleton<IToDoListXmlStorage, ToDoListXmlStrorage>();
+builder.Services.AddSingleton<IToDoListXmlRepository, ToDoListXmlRepository>();
 
 var app = builder.Build();
 

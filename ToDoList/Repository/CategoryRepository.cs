@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using ToDoList.Models;
 using ToDoList.Models.Domain;
 
 namespace ToDoList.Data;
@@ -23,10 +24,16 @@ public class CategoryRepository : ICategoryRepository
         return categories.ToList();
     }
 
-    public async Task Add(Category category)
+    public async Task Add(AddCategoryRequest addCategoryRequest)
     {
         var connection = toDoListDbContext.CreateConnection();
 
+        var category = new Category
+        {
+            Id = addCategoryRequest.Id,
+            Name = addCategoryRequest.Name,
+        };
+        
         var sql = "INSERT INTO Category (Id, Name) VALUES (@Id, @Name)";
 
         await connection.ExecuteAsync(sql, category);
