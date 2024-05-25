@@ -9,32 +9,28 @@
       <name>Home</name>
     </category>
     <category>
-      <id>7792664a-fc42-4c22-ace9-250738a37294</id>
-      <name>фів</name>
-    </category>
-    <category>
-      <id>e35a1a55-a6fa-4bae-accc-e8c6f3c12ba9</id>
-      <name>фів</name>
+      <id>51ed0d77-8cec-4465-8d90-753543601000</id>
+      <name>Home</name>
     </category>
   </categories>
   <todos>
     <todo>
       <id>e854374e-c287-46fa-b7a5-4122b3dd32e3</id>
       <task>asdads</task>
-      <isPerformed>True</isPerformed>
+      <isPerformed>False</isPerformed>
       <categoryName>Study</categoryName>
     </todo>
     <todo>
       <id>2abb512a-4793-49db-86a5-380370598a13</id>
       <task>Sugar</task>
-      <isPerformed>False</isPerformed>
+      <isPerformed>True</isPerformed>
       <categoryName>Home</categoryName>
       <dateToPerform>5/30/2024 12:00:00 AM</dateToPerform>
     </todo>
     <todo>
       <id>e9f5ff69-9c9b-479f-b3cf-7ac6b3abe5ab</id>
       <task>asdads</task>
-      <isPerformed>True</isPerformed>
+      <isPerformed>False</isPerformed>
       <categoryName>фів</categoryName>
       <dateToPerform>6/5/2024 12:00:00 AM</dateToPerform>
     </todo>
@@ -47,23 +43,16 @@
     <todo>
       <id>72e04243-5a7a-45b4-b50f-9f261095f7f7</id>
       <task>Sugar</task>
-      <isPerformed>False</isPerformed>
+      <isPerformed>True</isPerformed>
       <categoryName>Study</categoryName>
       <dateToPerform>5/23/2024 12:00:00 AM</dateToPerform>
     </todo>
     <todo>
-      <id>60b95f80-45f7-4cb2-9ffc-58f0b0116862</id>
-      <task>asdsad</task>
+      <id>19c4614f-5757-4373-bc9e-b7da1433b27b</id>
+      <task>asdads</task>
       <isPerformed>False</isPerformed>
-      <categoryName>фів</categoryName>
-      <dateToPerform>6/14/2024 12:00:00 AM</dateToPerform>
-    </todo>
-    <todo>
-      <id>9db62711-cc0b-4ce6-9729-4422a7c852ac</id>
-      <task>w</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>Home</categoryName>
-      <dateToPerform>6/14/2024 12:00:00 AM</dateToPerform>
+      <categoryName>Study</categoryName>
+      <dateToPerform>5/29/2024 12:00:00 AM</dateToPerform>
     </todo>
   </todos>
 </database>

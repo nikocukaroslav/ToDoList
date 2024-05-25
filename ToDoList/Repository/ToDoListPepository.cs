@@ -4,16 +4,16 @@ using ToDoList.Models.Domain;
 
 namespace ToDoList.Data;
 
-public class ToDoPepository : IToDoRepository
+public class ToDoListPepository : IToDoListRepository
 {
     private readonly ToDoListDbContext toDoListDbContext;
 
-    public ToDoPepository(ToDoListDbContext toDoListDbContext)
+    public ToDoListPepository(ToDoListDbContext toDoListDbContext)
     {
         this.toDoListDbContext = toDoListDbContext;
     }
 
-    public async Task<List<ToDo>> GetAll()
+    public async Task<List<ToDo>> GetAllToDos()
     {
         var connection = toDoListDbContext.CreateConnection();
 
@@ -24,7 +24,33 @@ public class ToDoPepository : IToDoRepository
         return todos.ToList();
     }
 
-    public async Task Add(AddToDoRequest addToDoRequest)
+    public async Task<List<Category>> GetAllCategories()
+    {
+        var connection = toDoListDbContext.CreateConnection();
+
+        var sql = "SELECT * FROM Category";
+
+        var categories =  await connection.QueryAsync<Category>(sql);
+
+        return categories.ToList();
+    }
+
+    public async Task AddCategory(AddCategoryRequest addCategoryRequest)
+    {
+        var connection = toDoListDbContext.CreateConnection();
+
+        var category = new Category
+        {
+            Id = addCategoryRequest.Id,
+            Name = addCategoryRequest.Name,
+        };
+        
+        var sql = "INSERT INTO Category (Id, Name) VALUES (@Id, @Name)";
+
+        await connection.ExecuteAsync(sql, category);
+    }
+    
+    public async Task AddToDo(AddToDoRequest addToDoRequest)
     {
         var connection = toDoListDbContext.CreateConnection();
 
@@ -73,7 +99,7 @@ public class ToDoPepository : IToDoRepository
     }
     
 
-    public async Task Delete(DeleteToDoRequest deleteToDoRequest)
+    public async Task DeleteToDo(DeleteToDoRequest deleteToDoRequest)
     {
         var connection = toDoListDbContext.CreateConnection();
 

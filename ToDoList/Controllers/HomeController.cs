@@ -5,81 +5,47 @@ using ToDoList.Data;
 using ToDoList.Models;
 using ToDoList.Models.Domain;
 using System.Linq;
+using ToDoList.Factory;
 
 namespace ToDoList.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly ToDoListDbContext toDoListDbContext;
-    private readonly XmlStorageContext xmlStorageContext;
-    private IToDoListXmlRepository toDoListXmlRepository;
-    private IToDoRepository todoRepository;
-    private ICategoryRepository categoryRepository;
+    private readonly StorageChanger _repository;
 
-    public HomeController(ILogger<HomeController> logger, ToDoListDbContext toDoListDbContext,
-        IToDoListXmlRepository toDoListXmlRepository, IToDoRepository todoRepository,
-        ICategoryRepository categoryRepository,
-        XmlStorageContext xmlStorageContext)
+    public HomeController(StorageChanger storageChanger)
     {
-        _logger = logger;
-        this.toDoListDbContext = toDoListDbContext;
-        this.xmlStorageContext = xmlStorageContext;
-        this.toDoListXmlRepository = toDoListXmlRepository;
-        this.todoRepository = todoRepository;
-        this.categoryRepository = categoryRepository;
+        _repository = storageChanger;
     }
 
-    [HttpPost]
     public IActionResult ChangeStorage(ChangeStorageRequest changeStorageRequest)
     {
-        HttpContext.Session.SetString("StorageName", changeStorageRequest.StorageName);
+        if (changeStorageRequest.StorageName != null)
+            HttpContext.Session.SetString("StorageName", changeStorageRequest.StorageName);
 
+        _repository.ChangeStorage();
+        
         return RedirectToAction("Index");
     }
-
 
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var storageName = HttpContext.Session.GetString("StorageName");
-
-        List<ToDo> todos;
-        List<Category> categories;
-        if (storageName == "DbStorage")
-        {
-            todos = await todoRepository.GetAll();
-            categories = await categoryRepository.GetAll();
-        }
-        else
-        {
-            todos = toDoListXmlRepository.LoadAllToDosXml(
-                xmlStorageContext.XmlStoragePath);
-            categories = toDoListXmlRepository.LoadAllCategories(
-                xmlStorageContext.XmlStoragePath);
-        }
+        var toDoListRepository = _repository.GetToDoListRepository();
 
         var model = new HomePageViewModel
         {
-            Categories = categories,
-            ToDos = todos,
+            Categories = await toDoListRepository.GetAllCategories(),
+            ToDos = await toDoListRepository.GetAllToDos(),
         };
+
         return View(model);
     }
 
     [HttpPost]
     public async Task<IActionResult> AddToDo(AddToDoRequest addToDoRequest)
     {
-        var storageName = HttpContext.Session.GetString("StorageName");
-
-        if (storageName == "DbStorage")
-        {
-            await todoRepository.Add(addToDoRequest);
-        }
-        else
-        {
-            toDoListXmlRepository.AddToDo(addToDoRequest);
-        }
+        await _repository.GetToDoListRepository().AddToDo(addToDoRequest);
 
         return RedirectToAction("Index");
     }
@@ -87,16 +53,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> AddCategory(AddCategoryRequest addCategoryRequest)
     {
-        var storageName = HttpContext.Session.GetString("StorageName");
-
-        if (storageName == "DbStorage")
-        {
-            await categoryRepository.Add(addCategoryRequest);
-        }
-        else
-        {
-            toDoListXmlRepository.AddCategory(addCategoryRequest);
-        }
+        await _repository.GetToDoListRepository().AddCategory(addCategoryRequest);
 
         return RedirectToAction("Index");
     }
@@ -104,16 +61,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> PerformToDo(HandleTodoRequest handleTodoRequest)
     {
-        var storageName = HttpContext.Session.GetString("StorageName");
-
-        if (storageName == "DbStorage")
-        {
-            await todoRepository.PerformToDo(handleTodoRequest);
-        }
-        else
-        {
-            toDoListXmlRepository.PerformToDo(handleTodoRequest);
-        }
+        await _repository.GetToDoListRepository().PerformToDo(handleTodoRequest);
 
         return RedirectToAction("Index");
     }
@@ -121,16 +69,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> UnperformToDo(HandleTodoRequest handleTodoRequest)
     {
-        var storageName = HttpContext.Session.GetString("StorageName");
-
-        if (storageName == "DbStorage")
-        {
-            await todoRepository.UnperformToDo(handleTodoRequest);
-        }
-        else
-        {
-            toDoListXmlRepository.UnperformToDo(handleTodoRequest);
-        }
+        await _repository.GetToDoListRepository().UnperformToDo(handleTodoRequest);
 
         return RedirectToAction("Index");
     }
@@ -138,16 +77,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteToDo(DeleteToDoRequest deleteToDoRequest)
     {
-        var storageName = HttpContext.Session.GetString("StorageName");
-
-        if (storageName == "DbStorage")
-        {
-            await todoRepository.Delete(deleteToDoRequest);
-        }
-        else
-        {
-            toDoListXmlRepository.DeleteToDo(deleteToDoRequest);
-        }
+        await _repository.GetToDoListRepository().DeleteToDo(deleteToDoRequest);
 
         return RedirectToAction("Index");
     }

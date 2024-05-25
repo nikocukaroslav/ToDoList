@@ -1,6 +1,7 @@
 using System.Xml;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.Data;
+using ToDoList.Factory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,16 +9,21 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession();
 
+builder.Services.AddHttpContextAccessor();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<ToDoListDbContext>();
 builder.Services.AddSingleton<XmlStorageContext>();
-builder.Services.AddSingleton<IToDoRepository, ToDoPepository>();
-builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
-builder.Services.AddSingleton<IToDoListXmlRepository, ToDoListXmlRepository>();
+
+builder.Services.AddSingleton<DbStorageFactory>();
+builder.Services.AddSingleton<XmlStorageFactory>();
+builder.Services.AddSingleton<StorageChanger>();
+
+builder.Services.AddSingleton<ToDoListPepository>();
+builder.Services.AddSingleton<ToDoListXmlRepository>();
 
 var app = builder.Build();
 

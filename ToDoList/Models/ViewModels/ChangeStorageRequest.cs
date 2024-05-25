@@ -2,5 +2,5 @@
 
 public class ChangeStorageRequest
 {
-    public string? StorageName { get; set; } = "DbStorage";
+    public string? StorageName { get; set; } = "XmlStorage";
 }
