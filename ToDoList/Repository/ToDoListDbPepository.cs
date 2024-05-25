@@ -4,11 +4,11 @@ using ToDoList.Models.Domain;
 
 namespace ToDoList.Data;
 
-public class ToDoListPepository : IToDoListRepository
+public class ToDoListDbPepository : IToDoListRepository
 {
     private readonly ToDoListDbContext toDoListDbContext;
 
-    public ToDoListPepository(ToDoListDbContext toDoListDbContext)
+    public ToDoListDbPepository(ToDoListDbContext toDoListDbContext)
     {
         this.toDoListDbContext = toDoListDbContext;
     }

@@ -22,7 +22,7 @@ builder.Services.AddSingleton<DbStorageFactory>();
 builder.Services.AddSingleton<XmlStorageFactory>();
 builder.Services.AddSingleton<StorageChanger>();
 
-builder.Services.AddSingleton<ToDoListPepository>();
+builder.Services.AddSingleton<ToDoListDbPepository>();
 builder.Services.AddSingleton<ToDoListXmlRepository>();
 
 var app = builder.Build();
