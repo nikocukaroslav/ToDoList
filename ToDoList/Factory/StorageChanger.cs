@@ -1,5 +1,4 @@
 ﻿using ToDoList.Data;
-using ToDoList.Models;
 
 namespace ToDoList.Factory;
 
@@ -21,7 +20,7 @@ public class StorageChanger : IToDoListFactory
         return _factory.GetToDoListRepository();
     }
 
-    public StorageChanger ChangeStorage()
+    public void ChangeStorage()
     {
         if (_httpContextAccessor.HttpContext != null)
         {
@@ -38,7 +37,5 @@ public class StorageChanger : IToDoListFactory
                 default: throw new Exception("No storage");
             }
         }
-
-        return this;
     }
 }

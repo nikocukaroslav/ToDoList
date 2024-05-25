@@ -1,10 +1,5 @@
-using System.Diagnostics;
-using System.Xml;
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.Data;
 using ToDoList.Models;
-using ToDoList.Models.Domain;
-using System.Linq;
 using ToDoList.Factory;
 
 namespace ToDoList.Controllers;
