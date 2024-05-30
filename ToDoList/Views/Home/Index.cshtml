@@ -164,21 +164,6 @@
         background-color: unset;
     }
 
-    .sortForm {
-        overflow: hidden;
-        padding-left: 0.4rem;
-        top: 0;
-        left: 0;
-        font-size: 1.2rem;
-        position: absolute;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        border: 2px solid #242424;
-        border-top: none;
-        border-left: none;
-    }
-
     .sortForm label {
         gap: 0.4rem;
         display: flex;
@@ -271,7 +256,7 @@
 
 </style>
 
-@model HomePageViewModel
+@model ToDoList.Models.ViewModels.HomePageViewModel
 
 @{
     var storageName = Context.Session.GetString("StorageName");
@@ -306,21 +291,21 @@
                       d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
             </svg>
         </span>
-        <input type="hidden" asp-for="AddCategoryRequest.Id" value="@Guid.NewGuid()"/>
-        <input type="text" asp-for="AddCategoryRequest.Name" required/>
+        <input type="hidden" asp-for="Category.Id" value="@Guid.NewGuid()"/>
+        <input type="text" asp-for="Category.Name" required/>
         <button>Add</button>
     </form>
     <h2>ToDo list</h2>
     <form class="addToDoForm" method="post" asp-action="AddToDo">
-        <input type="hidden" asp-for="AddToDoRequest.Id" value="@Guid.NewGuid()"/>
-        <input type="text" asp-for="AddToDoRequest.Task" required/>
-        <select asp-for="AddToDoRequest.CategoryName" required>
+        <input type="hidden" asp-for="ToDo.Id" value="@Guid.NewGuid()"/>
+        <input type="text" asp-for="ToDo.Task" required/>
+        <select asp-for="ToDo.CategoryName" required>
             @foreach (var category in Model.Categories)
             {
                 <option value="@category.Name">@category.Name</option>
             }
         </select>
-        <input type="date" class="date" asp-for="AddToDoRequest.DateToPerform"/>
+        <input type="date" class="date" asp-for="ToDo.DateToPerform"/>
         <button>Add</button>
     </form>
     <ul>
@@ -330,31 +315,21 @@
                 <div class="todo">
 
                     <form class="checkboxForm" method="post">
-                        <input type="hidden" asp-for="HandleTodoRequest.Id" value="@todo.Id"/>
-                        <input type="hidden" asp-for="ChangeStorageRequest" value="@todo."/>
-                        @if (!todo.IsPerformed)
-                        {
-                            <button class="checkbox" asp-action="PerformToDo">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkboxIcon"
-                                     viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                </svg>
-                            </button>
-                        }
-                        else
-                        {
-                            <button class="checkbox" asp-action="UnperformToDo">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                     class="checkboxIcon checkboxIconPerformed" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                </svg>
-                            </button>
-                        }
+                        <input type="hidden" asp-for="ToDo.Id" value="@todo.Id"/>
+                        <input type="hidden" asp-for="ToDo.IsPerformed" value="@todo.IsPerformed"/>
+
+                        <button class="checkbox" asp-action="HandlePerformed">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" 
+                                 class="checkboxIcon @(todo.IsPerformed ? "checkboxIconPerformed" : "")"
+                                 viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            </svg>
+                        </button>
                     </form>
                     <span class="@(todo.IsPerformed ? "completed" : "")">@todo.Task</span>
                 </div>
                 <form method="post" asp-action="DeleteToDo">
-                    <input type="hidden" asp-for="DeleteToDoRequest.Id" value="@todo.Id"/>
+                    <input type="hidden" asp-for="ToDo.Id" value="@todo.Id"/>
                     <button class="trashButton">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="trash"
                              viewBox="0 0 16 16">

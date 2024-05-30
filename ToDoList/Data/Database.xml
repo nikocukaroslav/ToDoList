@@ -28,13 +28,6 @@
       <dateToPerform>5/30/2024 12:00:00 AM</dateToPerform>
     </todo>
     <todo>
-      <id>e9f5ff69-9c9b-479f-b3cf-7ac6b3abe5ab</id>
-      <task>asdads</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>фів</categoryName>
-      <dateToPerform>6/5/2024 12:00:00 AM</dateToPerform>
-    </todo>
-    <todo>
       <id>f4615d08-7463-4bf0-81dd-8967aae93545</id>
       <task>asdsad</task>
       <isPerformed>True</isPerformed>
@@ -43,9 +36,15 @@
     <todo>
       <id>72e04243-5a7a-45b4-b50f-9f261095f7f7</id>
       <task>Sugar</task>
-      <isPerformed>True</isPerformed>
+      <isPerformed>False</isPerformed>
       <categoryName>Study</categoryName>
       <dateToPerform>5/23/2024 12:00:00 AM</dateToPerform>
+    </todo>
+    <todo>
+      <id>183a127b-44a5-49d1-b55c-68a323f21203</id>
+      <task>grfdfdgt</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>Study</categoryName>
     </todo>
   </todos>
 </database>

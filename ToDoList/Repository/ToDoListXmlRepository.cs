@@ -1,8 +1,8 @@
 ﻿using System.Xml;
-using ToDoList.Models;
+using ToDoList.Data;
 using ToDoList.Models.Domain;
 
-namespace ToDoList.Data
+namespace ToDoList.Repository
 {
     public class ToDoListXmlRepository : IToDoListRepository
     {
@@ -73,7 +73,7 @@ namespace ToDoList.Data
             return categories;
         }
 
-        public async Task AddToDo(AddToDoRequest addToDoRequest)
+        public async Task AddToDo(ToDo todo)
         {
             XmlDocument document = new XmlDocument();
 
@@ -83,37 +83,37 @@ namespace ToDoList.Data
 
             if (root != null)
             {
-                XmlElement todo = document.CreateElement("todo");
+                XmlElement newToDo = document.CreateElement("todo");
                 XmlElement id = document.CreateElement("id");
                 XmlElement task = document.CreateElement("task");
                 XmlElement isPerformed = document.CreateElement("isPerformed");
                 XmlElement categoryName = document.CreateElement("categoryName");
 
-                id.InnerText = addToDoRequest.Id.ToString();
-                task.InnerText = addToDoRequest.Task;
-                isPerformed.InnerText = addToDoRequest.IsPerformed.ToString();
-                categoryName.InnerText = addToDoRequest.CategoryName;
+                id.InnerText = todo.Id.ToString();
+                task.InnerText = todo.Task;
+                isPerformed.InnerText = todo.IsPerformed.ToString();
+                categoryName.InnerText = todo.CategoryName;
 
-                todo.AppendChild(id);
-                todo.AppendChild(task);
-                todo.AppendChild(isPerformed);
-                todo.AppendChild(categoryName);
+                newToDo.AppendChild(id);
+                newToDo.AppendChild(task);
+                newToDo.AppendChild(isPerformed);
+                newToDo.AppendChild(categoryName);
 
-                if (addToDoRequest.DateToPerform != null)
+                if (todo.DateToPerform != null)
                 {
                     XmlElement? dateToPerform = document.CreateElement("dateToPerform");
-                    dateToPerform.InnerText = addToDoRequest.DateToPerform.ToString();
-                    todo.AppendChild(dateToPerform);
+                    dateToPerform.InnerText = todo.DateToPerform.ToString();
+                    newToDo.AppendChild(dateToPerform);
                 }
 
-                root.AppendChild(todo);
+                root.AppendChild(newToDo);
                 SaveXml(
                     _xmlStorageContext.XmlStoragePath,
                     document);
             }
         }
 
-        public async Task AddCategory(AddCategoryRequest addCategoryRequest)
+        public async Task AddCategory(Category category)
         {
             XmlDocument document = new XmlDocument();
 
@@ -123,17 +123,17 @@ namespace ToDoList.Data
 
             if (root != null)
             {
-                XmlElement category = document.CreateElement("category");
+                XmlElement newCategory = document.CreateElement("category");
                 XmlElement id = document.CreateElement("id");
                 XmlElement name = document.CreateElement("name");
 
-                id.InnerText = addCategoryRequest.Id.ToString();
-                name.InnerText = addCategoryRequest.Name;
+                id.InnerText = category.Id.ToString();
+                name.InnerText = category.Name;
 
-                category.AppendChild(id);
-                category.AppendChild(name);
+                newCategory.AppendChild(id);
+                newCategory.AppendChild(name);
 
-                root.AppendChild(category);
+                root.AppendChild(newCategory);
 
                 SaveXml(
                     _xmlStorageContext.XmlStoragePath,
@@ -141,12 +141,12 @@ namespace ToDoList.Data
             }
         }
 
-        public async Task PerformToDo(HandleTodoRequest handleTodoRequest)
+        public async Task HandlePerformed(ToDo todo) 
         {
             XmlDocument document = new XmlDocument();
             document.Load(_xmlStorageContext.XmlStoragePath);
 
-            string idString = handleTodoRequest.Id.ToString();
+            string idString = todo.Id.ToString();
 
             XmlNode? todoNode = document.SelectSingleNode($"/database/todos/todo[id='{idString}']");
 
@@ -154,35 +154,17 @@ namespace ToDoList.Data
             {
                 XmlElement isPerformed = (XmlElement)todoNode.SelectSingleNode("isPerformed")!;
 
-                isPerformed.InnerText = true.ToString();
+                isPerformed.InnerText = (!todo.IsPerformed).ToString();
                 document.Save(_xmlStorageContext.XmlStoragePath);
             }
         }
-
-        public async Task UnperformToDo(HandleTodoRequest handleTodoRequest)
+        
+        public async Task DeleteToDo(ToDo todo)
         {
             XmlDocument document = new XmlDocument();
             document.Load(_xmlStorageContext.XmlStoragePath);
 
-            string idString = handleTodoRequest.Id.ToString();
-
-            XmlNode? todoNode = document.SelectSingleNode($"/database/todos/todo[id='{idString}']");
-
-            if (todoNode != null)
-            {
-                XmlElement isPerformed = (XmlElement)todoNode.SelectSingleNode("isPerformed")!;
-
-                isPerformed.InnerText = false.ToString();
-                document.Save(_xmlStorageContext.XmlStoragePath);
-            }
-        }
-
-        public async Task DeleteToDo(DeleteToDoRequest deleteToDoRequest)
-        {
-            XmlDocument document = new XmlDocument();
-            document.Load(_xmlStorageContext.XmlStoragePath);
-
-            string idString = deleteToDoRequest.Id.ToString();
+            string idString = todo.Id.ToString();
 
             XmlNode? todoToDelete = document.SelectSingleNode($"/database/todos/todo[id='{idString}']");
 

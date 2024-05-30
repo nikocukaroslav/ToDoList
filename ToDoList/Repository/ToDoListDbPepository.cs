@@ -1,21 +1,21 @@
 ﻿using Dapper;
-using ToDoList.Models;
+using ToDoList.Data;
 using ToDoList.Models.Domain;
 
-namespace ToDoList.Data;
+namespace ToDoList.Repository;
 
 public class ToDoListDbPepository : IToDoListRepository
 {
-    private readonly ToDoListDbContext toDoListDbContext;
+    private readonly ToDoListDbContext _toDoListDbContext;
 
     public ToDoListDbPepository(ToDoListDbContext toDoListDbContext)
     {
-        this.toDoListDbContext = toDoListDbContext;
+        _toDoListDbContext = toDoListDbContext;
     }
 
     public async Task<List<ToDo>> GetAllToDos()
     {
-        var connection = toDoListDbContext.CreateConnection();
+        var connection = _toDoListDbContext.CreateConnection();
 
         var sql = "SELECT * FROM ToDo";
         
@@ -26,7 +26,7 @@ public class ToDoListDbPepository : IToDoListRepository
 
     public async Task<List<Category>> GetAllCategories()
     {
-        var connection = toDoListDbContext.CreateConnection();
+        var connection = _toDoListDbContext.CreateConnection();
 
         var sql = "SELECT * FROM Category";
 
@@ -35,77 +35,61 @@ public class ToDoListDbPepository : IToDoListRepository
         return categories.ToList();
     }
 
-    public async Task AddCategory(AddCategoryRequest addCategoryRequest)
+    public async Task AddCategory(Category category)
     {
-        var connection = toDoListDbContext.CreateConnection();
+        var connection = _toDoListDbContext.CreateConnection();
 
-        var category = new Category
+        var newCategory = new Category
         {
-            Id = addCategoryRequest.Id,
-            Name = addCategoryRequest.Name,
+            Id = category.Id,
+            Name = category.Name,
         };
         
         var sql = "INSERT INTO Category (Id, Name) VALUES (@Id, @Name)";
 
-        await connection.ExecuteAsync(sql, category);
+        await connection.ExecuteAsync(sql, newCategory);
     }
     
-    public async Task AddToDo(AddToDoRequest addToDoRequest)
+    public async Task AddToDo(ToDo todo)
     {
-        var connection = toDoListDbContext.CreateConnection();
+        var connection = _toDoListDbContext.CreateConnection();
 
-        var todo = new ToDo
+        var newTodo = new ToDo
         {
-            Id = addToDoRequest.Id,
-            Task = addToDoRequest.Task,
-            CategoryName = addToDoRequest.CategoryName,
-            DateToPerform = addToDoRequest.DateToPerform,
+            Id = todo.Id,
+            Task = todo.Task,
+            CategoryName = todo.CategoryName,
+            DateToPerform = todo.DateToPerform,
         };
         
         var sql = "INSERT INTO ToDo (Id, Task, IsPerformed, DateToPerform, CategoryName) " +
                   "VALUES (@Id, @Task, @IsPerformed, @DateToPerform, @CategoryName)";
 
-        await connection.ExecuteAsync(sql, todo);
+        await connection.ExecuteAsync(sql, newTodo);
     }
 
-    public async Task PerformToDo(HandleTodoRequest handleTodoRequest)
+    public async Task HandlePerformed(ToDo todo)
     {
-        var connection = toDoListDbContext.CreateConnection();
+        var connection = _toDoListDbContext.CreateConnection();
         
-        var perfromToDo = new ToDo
+        var performToDo = new ToDo
         {
-            Id = handleTodoRequest.Id,
-            IsPerformed = true,
+            Id = todo.Id,
+            IsPerformed = !todo.IsPerformed,
         };
 
         var sql = "UPDATE ToDo SET IsPerformed = @IsPerformed WHERE Id = @Id";
 
-        await connection.ExecuteAsync(sql, perfromToDo);
+        await connection.ExecuteAsync(sql, performToDo);
     }
-    
-    public async Task UnperformToDo(HandleTodoRequest handleTodoRequest)
-    {
-        var connection = toDoListDbContext.CreateConnection();
-        
-        var perfromToDo = new ToDo
-        {
-            Id = handleTodoRequest.Id,
-            IsPerformed = false,
-        };
-        
-        var sql = "UPDATE ToDo SET IsPerformed = @IsPerformed WHERE Id = @Id";
 
-        await connection.ExecuteAsync(sql, perfromToDo);
-    }
-    
-
-    public async Task DeleteToDo(DeleteToDoRequest deleteToDoRequest)
+    public async Task DeleteToDo(ToDo todo)
     {
-        var connection = toDoListDbContext.CreateConnection();
+        var connection = _toDoListDbContext.CreateConnection();
 
         var todoToDelete = new ToDo
         {
-            Id = deleteToDoRequest.Id,
+            Id = todo.Id,
         };
         
         var sql = "DELETE FROM ToDo WHERE Id = @Id";

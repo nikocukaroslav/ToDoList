@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoList.Data;
 using ToDoList.Models;
 using ToDoList.Factory;
+using ToDoList.Models.Domain;
+using ToDoList.Models.ViewModels;
 
 namespace ToDoList.Controllers;
 
@@ -37,41 +39,34 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddToDo(AddToDoRequest addToDoRequest)
+    public async Task<IActionResult> AddToDo(ToDo todo)
     {
-        await _repository.GetToDoListRepository().AddToDo(addToDoRequest);
+        await _repository.GetToDoListRepository().AddToDo(todo);
 
         return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddCategory(AddCategoryRequest addCategoryRequest)
+    public async Task<IActionResult> AddCategory(Category category)
     {
-        await _repository.GetToDoListRepository().AddCategory(addCategoryRequest);
+        await _repository.GetToDoListRepository().AddCategory(category);
 
         return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public async Task<IActionResult> PerformToDo(HandleTodoRequest handleTodoRequest)
+    public async Task<IActionResult> HandlePerformed(ToDo todo)
     {
-        await _repository.GetToDoListRepository().PerformToDo(handleTodoRequest);
+        await _repository.GetToDoListRepository().HandlePerformed(todo);
 
         return RedirectToAction("Index");
     }
+    
 
     [HttpPost]
-    public async Task<IActionResult> UnperformToDo(HandleTodoRequest handleTodoRequest)
+    public async Task<IActionResult> DeleteToDo(ToDo todo)
     {
-        await _repository.GetToDoListRepository().UnperformToDo(handleTodoRequest);
-
-        return RedirectToAction("Index");
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> DeleteToDo(DeleteToDoRequest deleteToDoRequest)
-    {
-        await _repository.GetToDoListRepository().DeleteToDo(deleteToDoRequest);
+        await _repository.GetToDoListRepository().DeleteToDo(todo);
 
         return RedirectToAction("Index");
     }

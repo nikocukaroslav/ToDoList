@@ -1,14 +1,12 @@
 ﻿using ToDoList.Models.Domain;
 
-namespace ToDoList.Models;
+namespace ToDoList.Models.ViewModels;
 
 public class HomePageViewModel
 { 
+    public ToDo ToDo { get; set; }
+    public Category Category { get; set; }
     public ChangeStorageRequest ChangeStorageRequest { get; set; }
-    public AddToDoRequest AddToDoRequest { get; set; }
-    public DeleteToDoRequest DeleteToDoRequest { get; set; }
-    public HandleTodoRequest HandleTodoRequest { get; set; }
-    public AddCategoryRequest AddCategoryRequest { get; set; }
     public List<ToDo>? ToDos { get; set; }
     public List<Category>? Categories { get; set; }
 }
