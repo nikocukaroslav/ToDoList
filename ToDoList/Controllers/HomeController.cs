@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.Data;
 using ToDoList.Models;
 using ToDoList.Factory;
 
@@ -17,8 +18,6 @@ public class HomeController : Controller
     {
         if (changeStorageRequest.StorageName != null)
             HttpContext.Session.SetString("StorageName", changeStorageRequest.StorageName);
-
-        _repository.ChangeStorage();
         
         return RedirectToAction("Index");
     }

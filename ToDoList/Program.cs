@@ -17,9 +17,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<ToDoListDbContext>();
 builder.Services.AddSingleton<XmlStorageContext>();
 
-
-builder.Services.AddSingleton<DbStorageFactory>();
-builder.Services.AddSingleton<XmlStorageFactory>();
 builder.Services.AddSingleton<StorageChanger>();
 
 builder.Services.AddSingleton<ToDoListDbPepository>();

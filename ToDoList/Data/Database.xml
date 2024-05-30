@@ -47,12 +47,5 @@
       <categoryName>Study</categoryName>
       <dateToPerform>5/23/2024 12:00:00 AM</dateToPerform>
     </todo>
-    <todo>
-      <id>19c4614f-5757-4373-bc9e-b7da1433b27b</id>
-      <task>asdads</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>Study</categoryName>
-      <dateToPerform>5/29/2024 12:00:00 AM</dateToPerform>
-    </todo>
   </todos>
 </database>

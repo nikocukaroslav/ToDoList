@@ -4,5 +4,5 @@ namespace ToDoList.Factory;
 
 public interface IToDoListFactory
 {
-    IToDoListRepository GetToDoListRepository();
+    IToDoListRepository? GetToDoListRepository();
 }
