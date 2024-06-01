@@ -1,7 +1,6 @@
-﻿using ToDoList.Models;
-using ToDoList.Models.Domain;
+﻿using ToDoList.Models.Domain;
 
-namespace ToDoList.Data;
+namespace ToDoList.Repository;
 
 public interface IToDoListRepository
 {

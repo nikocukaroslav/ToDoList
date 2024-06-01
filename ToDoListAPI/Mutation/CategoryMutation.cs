@@ -2,6 +2,7 @@
 using GraphQL.Types;
 using ToDoList.Data;
 using ToDoList.Models.Domain;
+using ToDoList.Repository;
 using ToDoListAPI.Type;
 
 namespace ToDoListAPI.Mutation

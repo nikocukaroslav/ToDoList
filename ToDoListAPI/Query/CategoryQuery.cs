@@ -1,5 +1,6 @@
 using GraphQL.Types;
 using ToDoList.Data;
+using ToDoList.Repository;
 using ToDoListAPI.Type;
 
 namespace ToDoListAPI.Query;

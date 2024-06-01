@@ -1,23 +1,21 @@
 ﻿using System.Data;
-using Dapper;
 using Microsoft.Data.SqlClient;
-using ToDoList.Models.Domain;
 
 namespace ToDoList.Data;
 
 public class ToDoListDbContext
 {
-    private readonly IConfiguration configuration;
-    private readonly string? connectionString;
+    private readonly IConfiguration _configuration;
+    private readonly string? _connectionString;
 
     public ToDoListDbContext(IConfiguration configuration)
     {
-        this.configuration = configuration;
-        connectionString = this.configuration.GetConnectionString("ToDoListDbConnectionString");
+        _configuration = configuration;
+        _connectionString = _configuration.GetConnectionString("ToDoListDbConnectionString");
     }
 
     public IDbConnection CreateConnection()
     {
-        return new SqlConnection(connectionString);
+        return new SqlConnection(_connectionString);
     }
 }

@@ -2,6 +2,7 @@ using GraphQL;
 using GraphQL.Types;
 using ToDoList.Data;
 using ToDoList.Models.Domain;
+using ToDoList.Repository;
 using ToDoListAPI.Type;
 
 namespace ToDoListAPI.Mutation;
@@ -11,27 +12,29 @@ public sealed class ToDoMutation : ObjectGraphType
     public ToDoMutation(IToDoListRepository todoListRepository)
     {
         Field<ToDoType>("addToDo").Arguments(new QueryArguments(new QueryArgument<ToDoInputType>
-        {
-            Name = "addToDo"
-        }
+            {
+                Name = "todo"
+            }
         )).ResolveAsync(async context =>
-        {
-            return  todoListRepository.AddToDo(context.GetArgument<ToDo>("addToDo"));
-        });
+            {
+                var todo = context.GetArgument<ToDo>("todo");
+                return todoListRepository.AddToDo(todo);
+            }
+        );
 
-        Field<ToDoType>("handlePerformed").Arguments(new QueryArguments(new QueryArgument<ToDoInputType>
-        {
-            Name = "handlePerformed"
-        }
-        )).ResolveAsync(async context =>
-        {
-            return todoListRepository.HandlePerformed(context.GetArgument<ToDo>("handlePerformed"));
-        });
+              Field<ToDoType>("handlePerformed").Arguments(new QueryArguments(new QueryArgument<ToDoInputType>
+               {
+                   Name = "handlePerformed"
+               }
+               )).ResolveAsync(async context =>
+               {
+                   return todoListRepository.HandlePerformed(context.GetArgument<ToDo>("handlePerformed"));
+               });
 
         Field<GuidGraphType>("deleteToDo").Arguments(new QueryArguments(new QueryArgument<GuidGraphType>
-        {
-            Name = "id"
-        }
+            {
+                Name = "id"
+            }
         )).Resolve(context =>
         {
             ToDo todoId = context.GetArgument<ToDo>("id");
