@@ -4,11 +4,10 @@ namespace ToDoList.Repository;
 
 public interface IToDoListRepository
 {
-    Task<List<ToDo>> GetAllToDos();
-    Task<List<Category>> GetAllCategories();
-    Task AddCategory(Category category);
-    Task AddToDo(ToDo todo);
-    Task HandlePerformed(ToDo todo);
-    Task DeleteToDo(ToDo todo);
-
+    List<ToDo> GetAllToDos();
+    List<Category> GetAllCategories();
+    Category AddCategory(Category category);
+    ToDo AddToDo(ToDo todo);
+    ToDo HandlePerformed(ToDo todo);
+    void DeleteToDo(ToDo todo);
 }

@@ -25,48 +25,48 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         var toDoListRepository = _repository.GetToDoListRepository();
 
         var model = new HomePageViewModel
         {
-            Categories = await toDoListRepository.GetAllCategories(),
-            ToDos = await toDoListRepository.GetAllToDos(),
+            Categories = toDoListRepository.GetAllCategories(),
+            ToDos =  toDoListRepository.GetAllToDos(),
         };
 
         return View(model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddToDo(ToDo todo)
+    public IActionResult AddToDo(ToDo todo)
     {
-        await _repository.GetToDoListRepository().AddToDo(todo);
+        _repository.GetToDoListRepository().AddToDo(todo);
 
         return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddCategory(Category category)
+    public IActionResult AddCategory(Category category)
     {
-        await _repository.GetToDoListRepository().AddCategory(category);
+         _repository.GetToDoListRepository().AddCategory(category);
 
         return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public async Task<IActionResult> HandlePerformed(ToDo todo)
+    public IActionResult HandlePerformed(ToDo todo)
     {
-        await _repository.GetToDoListRepository().HandlePerformed(todo);
+         _repository.GetToDoListRepository().HandlePerformed(todo);
 
         return RedirectToAction("Index");
     }
     
 
     [HttpPost]
-    public async Task<IActionResult> DeleteToDo(ToDo todo)
+    public IActionResult DeleteToDo(ToDo todo)
     {
-        await _repository.GetToDoListRepository().DeleteToDo(todo);
+        _repository.GetToDoListRepository().DeleteToDo(todo);
 
         return RedirectToAction("Index");
     }

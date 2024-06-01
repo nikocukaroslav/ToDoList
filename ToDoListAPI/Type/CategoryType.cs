@@ -11,7 +11,7 @@ public sealed class CategoryType : ObjectGraphType<Category>
     {
         Field(x => x.Id);
         Field(x => x.Name);
-        Field<ListGraphType<ToDoType>>("ToDos").ResolveAsync(async context =>
-            await todoListRepository.GetAllToDos());
+        Field<ListGraphType<ToDoType>>("ToDos").Resolve(context =>
+             todoListRepository.GetAllToDos());
     }
 }

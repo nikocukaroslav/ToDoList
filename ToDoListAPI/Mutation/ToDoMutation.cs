@@ -1,6 +1,6 @@
+using System.Runtime.InteropServices.JavaScript;
 using GraphQL;
 using GraphQL.Types;
-using ToDoList.Data;
 using ToDoList.Models.Domain;
 using ToDoList.Repository;
 using ToDoListAPI.Type;
@@ -15,33 +15,39 @@ public sealed class ToDoMutation : ObjectGraphType
             {
                 Name = "todo"
             }
-        )).ResolveAsync(async context =>
+        )).Resolve(context =>
             {
                 var todo = context.GetArgument<ToDo>("todo");
                 return todoListRepository.AddToDo(todo);
             }
         );
 
-              Field<ToDoType>("handlePerformed").Arguments(new QueryArguments(new QueryArgument<ToDoInputType>
-               {
-                   Name = "handlePerformed"
-               }
-               )).ResolveAsync(async context =>
-               {
-                   return todoListRepository.HandlePerformed(context.GetArgument<ToDo>("handlePerformed"));
-               });
+        Field<ToDoType>("handlePerformed").Arguments(new QueryArguments(new QueryArgument<ToDoInputType>
+            {
+                Name = "handlePerformed"
+            }
+        )).Resolve(context =>
+        {
+            var handledToDo = context.GetArgument<ToDo>("handlePerformed");
+            
+            return todoListRepository.HandlePerformed(handledToDo);
+        });
 
-        Field<GuidGraphType>("deleteToDo").Arguments(new QueryArguments(new QueryArgument<GuidGraphType>
+        Field<StringGraphType>("deleteToDo").Arguments(new QueryArguments(new QueryArgument<IdGraphType>
             {
                 Name = "id"
             }
         )).Resolve(context =>
         {
-            ToDo todoId = context.GetArgument<ToDo>("id");
+            var todoId = context.GetArgument<Guid>("id");
+            var todoToDelete = new ToDo
+            {
+                Id = todoId,
+            };
 
-            todoListRepository.DeleteToDo(todoId);
+            todoListRepository.DeleteToDo(todoToDelete);
 
-            return "The todo against this Id " + todoId + " has been deleted";
+            return "ToDo with id " + todoId + " has been deleted";
         });
     }
 }

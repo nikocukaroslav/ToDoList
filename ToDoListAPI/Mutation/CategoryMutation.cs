@@ -7,7 +7,7 @@ using ToDoListAPI.Type;
 
 namespace ToDoListAPI.Mutation
 {
-    public class CategoryMutation : ObjectGraphType
+    public sealed class CategoryMutation : ObjectGraphType
     {
         public CategoryMutation(IToDoListRepository todoListRepository)
         {
@@ -15,7 +15,7 @@ namespace ToDoListAPI.Mutation
             {
                 Name = "category"
             }
-            )).ResolveAsync(async context =>
+            )).Resolve(context =>
             {
                   return todoListRepository.AddCategory(context.GetArgument<Category>("category"));
             });

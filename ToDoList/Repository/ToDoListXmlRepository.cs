@@ -13,7 +13,7 @@ namespace ToDoList.Repository
             this._xmlStorageContext = xmlStorageContext;
         }
 
-        public async Task<List<ToDo>> GetAllToDos()
+        public List<ToDo> GetAllToDos()
         {
             XmlDocument document = new XmlDocument();
             document.Load(_xmlStorageContext.XmlStoragePath);
@@ -47,7 +47,7 @@ namespace ToDoList.Repository
             return todos;
         }
 
-        public async Task<List<Category>> GetAllCategories()
+        public List<Category> GetAllCategories()
         {
             XmlDocument document = new XmlDocument();
             document.Load(_xmlStorageContext.XmlStoragePath);
@@ -73,7 +73,7 @@ namespace ToDoList.Repository
             return categories;
         }
 
-        public async Task AddToDo(ToDo todo)
+        public ToDo AddToDo(ToDo todo)
         {
             XmlDocument document = new XmlDocument();
 
@@ -111,9 +111,11 @@ namespace ToDoList.Repository
                     _xmlStorageContext.XmlStoragePath,
                     document);
             }
+
+            return null;
         }
 
-        public async Task AddCategory(Category category)
+        public Category AddCategory(Category category)
         {
             XmlDocument document = new XmlDocument();
 
@@ -139,9 +141,11 @@ namespace ToDoList.Repository
                     _xmlStorageContext.XmlStoragePath,
                     document);
             }
+
+            return null;
         }
 
-        public async Task HandlePerformed(ToDo todo) 
+        public ToDo HandlePerformed(ToDo todo) 
         {
             XmlDocument document = new XmlDocument();
             document.Load(_xmlStorageContext.XmlStoragePath);
@@ -157,9 +161,11 @@ namespace ToDoList.Repository
                 isPerformed.InnerText = (!todo.IsPerformed).ToString();
                 document.Save(_xmlStorageContext.XmlStoragePath);
             }
+
+            return null;
         }
         
-        public async Task DeleteToDo(ToDo todo)
+        public void DeleteToDo(ToDo todo)
         {
             XmlDocument document = new XmlDocument();
             document.Load(_xmlStorageContext.XmlStoragePath);

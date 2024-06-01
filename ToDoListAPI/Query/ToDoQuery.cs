@@ -1,5 +1,4 @@
 using GraphQL.Types;
-using ToDoList.Data;
 using ToDoList.Repository;
 using ToDoListAPI.Type;
 
@@ -9,8 +8,8 @@ public sealed class ToDoQuery : ObjectGraphType
 {
     public ToDoQuery(IToDoListRepository toDoListRepository)
     {
-        Field<ListGraphType<ToDoType>>("todos").ResolveAsync(async context =>
-            await toDoListRepository.GetAllToDos()
+        Field<ListGraphType<ToDoType>>("todos").Resolve(context =>
+             toDoListRepository.GetAllToDos()
         );
     }
 }
