@@ -1,0 +1,9 @@
+.todoList {
+    max-height: 36rem;
+    overflow: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    list-style: none;
+}

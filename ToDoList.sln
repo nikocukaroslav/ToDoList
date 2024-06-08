@@ -1,8 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList", "ToDoList\ToDoList.csproj", "{8FE76C36-EC35-4015-A4E7-49E1BB7A264C}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListMVC", "ToDoListMVC\ToDoListMVC.csproj", "{8FE76C36-EC35-4015-A4E7-49E1BB7A264C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListAPI", "ToDoListAPI\ToDoListAPI.csproj", "{B6C8EB5D-2756-4523-9808-B9DB9F3C5846}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListAPI", "ToDoListAPI\ToDoListAPI.csproj", "{B6C8EB5D-2756-4523-9808-B9DB9F3C5846}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListReact.Server", "ToDoListReact\ToDoListReact.Server\ToDoListReact.Server.csproj", "{D24C1731-676F-4E90-AC28-FB9CDF90A271}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "todolistreact.client", "ToDoListReact\todolistreact.client\todolistreact.client.esproj", "{65624763-5B1F-454A-B4FE-1EFA0D4D60C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +25,21 @@ Global
 		{B6C8EB5D-2756-4523-9808-B9DB9F3C5846}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6C8EB5D-2756-4523-9808-B9DB9F3C5846}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6C8EB5D-2756-4523-9808-B9DB9F3C5846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D24C1731-676F-4E90-AC28-FB9CDF90A271}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D24C1731-676F-4E90-AC28-FB9CDF90A271}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D24C1731-676F-4E90-AC28-FB9CDF90A271}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D24C1731-676F-4E90-AC28-FB9CDF90A271}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65624763-5B1F-454A-B4FE-1EFA0D4D60C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65624763-5B1F-454A-B4FE-1EFA0D4D60C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65624763-5B1F-454A-B4FE-1EFA0D4D60C8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{65624763-5B1F-454A-B4FE-1EFA0D4D60C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65624763-5B1F-454A-B4FE-1EFA0D4D60C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65624763-5B1F-454A-B4FE-1EFA0D4D60C8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D783FFC0-7E98-429D-BE4E-65852A1DC29A}
 	EndGlobalSection
 EndGlobal

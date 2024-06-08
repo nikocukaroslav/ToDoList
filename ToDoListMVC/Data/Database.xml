@@ -36,13 +36,13 @@
     <todo>
       <id>183a127b-44a5-49d1-b55c-68a323f21203</id>
       <task>grfdfdgt</task>
-      <isPerformed>False</isPerformed>
+      <isPerformed>True</isPerformed>
       <categoryName>Study</categoryName>
     </todo>
     <todo>
       <id>c25c82cd-8f5d-481c-ada9-175c4bc22be4</id>
       <task>grfdfdgt</task>
-      <isPerformed>False</isPerformed>
+      <isPerformed>True</isPerformed>
       <categoryName>Home</categoryName>
       <dateToPerform>6/19/2024 12:00:00 AM</dateToPerform>
     </todo>

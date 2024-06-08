@@ -1,0 +1,26 @@
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #ddd;
+    font-family: sans-serif;
+    background-image: linear-gradient(to right top, #495057, #444);
+    color-scheme: light dark;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.6rem;
+    border-radius: 6px;
+    width: 40rem;
+    height: 50rem;
+    background-color: #333;
+    padding: 2.4rem;
+    box-shadow: 0 2px 10px 5px rgba(0, 0, 0, 0.1);
+    border: 2px solid #242424;
+    position: relative;
+}

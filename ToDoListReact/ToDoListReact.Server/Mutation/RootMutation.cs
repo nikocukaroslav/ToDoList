@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.JavaScript;
 using GraphQL;
 using GraphQL.Types;
 using ToDoList.Models.Domain;
@@ -7,36 +6,38 @@ using ToDoListAPI.Type;
 
 namespace ToDoListAPI.Mutation;
 
-public sealed class ToDoMutation : ObjectGraphType
+public sealed class RootMutation : ObjectGraphType
 {
-    public ToDoMutation(IToDoListRepository todoListRepository)
+    public RootMutation(IToDoListRepository todoListRepository)
     {
+
         Field<ToDoType>("addToDo").Arguments(new QueryArguments(new QueryArgument<ToDoInputType>
-            {
-                Name = "todo"
-            }
+        {
+            Name = "todo"
+        }
         )).Resolve(context =>
-            {
-                var todo = context.GetArgument<ToDo>("todo");
-                return todoListRepository.AddToDo(todo);
-            }
+        {
+            var todo = context.GetArgument<ToDo>("todo");
+
+            return todoListRepository.AddToDo(todo);
+        }
         );
 
         Field<ToDoType>("handlePerformed").Arguments(new QueryArguments(new QueryArgument<ToDoInputType>
-            {
-                Name = "handlePerformed"
-            }
+        {
+            Name = "handlePerformed"
+        }
         )).Resolve(context =>
         {
             var handledToDo = context.GetArgument<ToDo>("handlePerformed");
-            
+
             return todoListRepository.HandlePerformed(handledToDo);
         });
 
         Field<StringGraphType>("deleteToDo").Arguments(new QueryArguments(new QueryArgument<IdGraphType>
-            {
-                Name = "id"
-            }
+        {
+            Name = "id"
+        }
         )).Resolve(context =>
         {
             var todoId = context.GetArgument<Guid>("id");
@@ -49,5 +50,14 @@ public sealed class ToDoMutation : ObjectGraphType
 
             return "ToDo with id " + todoId + " has been deleted";
         });
+
+        Field<CategoryType>("addCategory").Arguments(new QueryArguments(new QueryArgument<CategoryInputType>
+        {
+            Name = "category"
+        }
+           )).Resolve(context =>
+           {
+               return todoListRepository.AddCategory(context.GetArgument<Category>("category"));
+           });
     }
 }

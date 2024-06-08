@@ -1,12 +1,63 @@
+using GraphQL;
 using GraphQL.Types;
+using ToDoList.Models.Domain;
+using ToDoList.Repository;
+using ToDoListAPI.Type;
 
 namespace ToDoListAPI.Mutation;
 
 public sealed class RootMutation : ObjectGraphType
 {
-    public RootMutation()
+    public RootMutation(IToDoListRepository todoListRepository)
     {
-        Field<ToDoMutation>("todoMutation").Resolve(context => new { });
-        Field<CategoryMutation>("categoryMutation").Resolve(context => new { });
+
+        Field<ToDoType>("addToDo").Arguments(new QueryArguments(new QueryArgument<ToDoInputType>
+        {
+            Name = "todo"
+        }
+        )).Resolve(context =>
+        {
+            var todo = context.GetArgument<ToDo>("todo");
+
+            return todoListRepository.AddToDo(todo);
+        }
+        );
+
+        Field<ToDoType>("handlePerformed").Arguments(new QueryArguments(new QueryArgument<ToDoInputType>
+        {
+            Name = "handlePerformed"
+        }
+        )).Resolve(context =>
+        {
+            var handledToDo = context.GetArgument<ToDo>("handlePerformed");
+
+            return todoListRepository.HandlePerformed(handledToDo);
+        });
+
+        Field<StringGraphType>("deleteToDo").Arguments(new QueryArguments(new QueryArgument<IdGraphType>
+        {
+            Name = "id"
+        }
+        )).Resolve(context =>
+        {
+            var todoId = context.GetArgument<Guid>("id");
+            var todoToDelete = new ToDo
+            {
+                Id = todoId,
+            };
+
+            todoListRepository.DeleteToDo(todoToDelete);
+
+            return "ToDo with id " + todoId + " has been deleted";
+        });
+
+        Field<CategoryType>("addCategory").Arguments(new QueryArguments(new QueryArgument<CategoryInputType>
+        {
+            Name = "category"
+        }
+           )).Resolve(context =>
+           {
+               return todoListRepository.AddCategory(context.GetArgument<Category>("category"));
+           });
     }
 }

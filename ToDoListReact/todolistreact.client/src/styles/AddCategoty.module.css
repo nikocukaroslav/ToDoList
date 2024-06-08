@@ -1,0 +1,40 @@
+.addCategoryButton {
+    padding: 0.4rem 0.8rem;
+    position: absolute;
+    top: -10%;
+    right: 0;
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.addCategoryButton:hover {
+    background-color: #242424;
+}
+
+.addCategoryForm {
+    display: flex;
+    gap: 0.4rem;
+    position: absolute;
+    top: -10%;
+}
+
+.plus {
+    width: 2.4rem;
+}
+
+.backButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    border-radius: 6px;
+    width: 4rem;
+    transition: all 0.2s;
+}
+
+.backButton:hover {
+    background-color: #242424;
+}
