@@ -2,17 +2,23 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
 export const BASE_URL = "https://localhost:7208/graphql";
 
-const initialState = {
+export const initialState = {
     todos: [],
     categories: [],
+    storage: "XmlStorage",
 };
 
+
 export const fetchCategories = createAsyncThunk(
-    "todo/fetchCategories",
-    async () => {
+    "todolist/fetchCategories",
+    async (_, {getState}) => {
+        const state = getState();
         const response = await fetch(BASE_URL, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "StorageName": state.todolist.storage
+            },
             body: JSON.stringify({
                 query: `
                     {
@@ -28,21 +34,26 @@ export const fetchCategories = createAsyncThunk(
     }
 );
 
+
 export const fetchToDos = createAsyncThunk(
-    "todo/fetchToDos",
-    async () => {
+    "todolist/fetchToDos",
+    async (_, {getState}) => {
+        const state = getState();
         const response = await fetch(BASE_URL, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "StorageName": state.todolist.storage
+            },
             body: JSON.stringify({
                 query: `
                     {
                          todos {
-                               id
-                               task
-                               isPerformed
-                               categoryName
-                               dateToPerform
+                             id
+                             task
+                             isPerformed
+                             categoryName
+                             dateToPerform
                         }
                     }
                 `
@@ -55,11 +66,15 @@ export const fetchToDos = createAsyncThunk(
 
 
 export const addToDo = createAsyncThunk(
-    "todo/addToDo",
-    async (newToDo) => {
+    "todolist/addToDo",
+    async (newToDo, {getState}) => {
+        const state = getState();
         await fetch(BASE_URL, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "StorageName": state.todolist.storage
+            },
             body: JSON.stringify({
                 query: `
                      mutation AddToDo($todo: ToDoInputType!) {
@@ -82,11 +97,15 @@ export const addToDo = createAsyncThunk(
 );
 
 export const togglePerformed = createAsyncThunk(
-    "todo/togglePerformed",
-    async (toggledToDo) => {
+    "todolist/togglePerformed",
+    async (toggledToDo, {getState}) => {
+        const state = getState();
         const response = await fetch(BASE_URL, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "StorageName": state.todolist.storage
+            },
             body: JSON.stringify({
                 query: `
                     mutation TogglePerformed($todo: ToDoInputType!){
@@ -102,17 +121,23 @@ export const togglePerformed = createAsyncThunk(
             }),
         });
         const data = await response.json();
+
         return data.data.handlePerformed;
+
     }
 );
 
 
 export const deleteToDo = createAsyncThunk(
-    "todo/deleteToDo",
-    async (id) => {
+    "todolist/deleteToDo",
+    async (id, {getState}) => {
+        const state = getState();
         await fetch(BASE_URL, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "StorageName": state.todolist.storage
+            },
             body: JSON.stringify({
                 query: `
                     mutation DeleteToDo($id: ID!){
@@ -129,11 +154,15 @@ export const deleteToDo = createAsyncThunk(
 );
 
 export const addCategory = createAsyncThunk(
-    "todo/addCategory",
-    async (newCategory) => {
+    "todolist/addCategory",
+    async (newCategory, {getState}) => {
+        const state = getState();
         await fetch(BASE_URL, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "StorageName": state.todolist.storage
+            },
             body: JSON.stringify({
                 query: `
                          mutation AddCategory($category: CategoryInputType!) {
@@ -152,9 +181,14 @@ export const addCategory = createAsyncThunk(
     }
 )
 
-const toDoSlice = createSlice({
-    name: "todo",
+const toDoListSlice = createSlice({
+    name: "todolist",
     initialState,
+    reducers: {
+        changeStorage(state, action) {
+            state.storage = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchToDos.fulfilled, (state, action) => {
             state.todos = action.payload;
@@ -181,4 +215,6 @@ const toDoSlice = createSlice({
     },
 });
 
-export default toDoSlice.reducer;
+export const {changeStorage} = toDoListSlice.actions;
+
+export default toDoListSlice.reducer;

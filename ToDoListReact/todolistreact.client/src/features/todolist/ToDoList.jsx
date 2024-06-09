@@ -2,10 +2,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {ToDo} from "./ToDo";
 import styles from "../../styles/ToDoList.module.css";
 import {useEffect} from "react";
-import {fetchToDos} from "@/features/todos/ToDoSlice.js";
+import {fetchToDos} from "@/features/todolist/ToDoListSlice.js";
 
 export function ToDoList() {
-    const todos = useSelector((state) => state.todo.todos);
+    const todos = useSelector((state) => state.todolist.todos);
     const dispatch = useDispatch();
 
     useEffect(() => {

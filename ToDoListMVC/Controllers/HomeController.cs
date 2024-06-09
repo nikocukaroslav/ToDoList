@@ -16,6 +16,7 @@ public class HomeController : Controller
         _repository = storageChanger;
     }
 
+    [HttpPost]
     public IActionResult ChangeStorage(ChangeStorageRequest changeStorageRequest)
     {
         if (changeStorageRequest.StorageName != null)

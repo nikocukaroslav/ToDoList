@@ -1,17 +1,19 @@
 import "./styles/App.css";
-import { ToDoList } from "./features/todos/ToDoList";
-import { AddToDoForm } from "./features/todos/AddToDoForm";
-import { AddCategory } from "./features/todos/AddCategory";
+import {ToDoList} from "./features/todolist/ToDoList";
+import {AddToDoForm} from "./features/todolist/AddToDoForm";
+import {AddCategory} from "./features/todolist/AddCategory";
+import StorageChanger from "@/features/todolist/StorageChanger.jsx";
 
 function App() {
-  return (
-    <main>
-      <h2>ToDo list</h2>
-      <AddToDoForm />
-      <AddCategory />
-      <ToDoList />
-    </main>
-  );
+    return (
+        <main>
+            <h2>ToDo list</h2>
+            <StorageChanger/>
+            <AddToDoForm/>
+            <AddCategory/>
+            <ToDoList/>
+        </main>
+    );
 }
 
 export default App;

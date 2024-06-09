@@ -1,7 +1,7 @@
 import styles from "../../styles/AddToDoForm.module.css";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addToDo, fetchCategories} from "./ToDoSlice.js";
+import {addToDo, fetchCategories} from "./ToDoListSlice.js";
 import {generateGUID} from "@/helpers.js";
 
 export function AddToDoForm() {
@@ -11,7 +11,7 @@ export function AddToDoForm() {
 
     const dispatch = useDispatch();
 
-    const categories = useSelector((store) => store.todo.categories);
+    const categories = useSelector((store) => store.todolist.categories);
 
     useEffect(() => {
         dispatch(fetchCategories())

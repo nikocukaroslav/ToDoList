@@ -2,6 +2,7 @@ using GraphiQl;
 using GraphQL;
 using GraphQL.Types;
 using ToDoList.Data;
+using ToDoList.Factory;
 using ToDoList.Repository;
 using ToDoListAPI.Mutation;
 using ToDoListAPI.Query;
@@ -11,8 +12,19 @@ using ToDoListAPI.Type;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddTransient<ToDoListDbContext>();
-builder.Services.AddTransient<IToDoListRepository, ToDoListDbPepository>();
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSingleton<ToDoListDbContext>();
+builder.Services.AddSingleton<XmlStorageContext>();
+
+builder.Services.AddSingleton<StorageChanger>();
+
+builder.Services.AddSingleton<ToDoListDbPepository>();
+builder.Services.AddSingleton<ToDoListXmlRepository>();
 
 builder.Services.AddTransient<CategoryType>();
 builder.Services.AddTransient<ToDoType>();
@@ -35,11 +47,11 @@ var configuration = provider.GetRequiredService<IConfiguration>();
 
 builder.Services.AddCors(options =>
 {
-    var frontendURL = configuration.GetValue<string>("React_Url");
+    var reactUrl = configuration.GetConnectionString("React_Url");
 
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
 
@@ -53,6 +65,8 @@ var app = builder.Build();
 app.UseGraphiQl("/graphql");
 
 app.UseCors();
+
+app.UseSession();
 
 app.UseGraphQL<ISchema>();
 

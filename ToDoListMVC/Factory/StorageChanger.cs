@@ -18,24 +18,24 @@ public class StorageChanger : IToDoListFactory
 
     public IToDoListRepository? GetToDoListRepository()
     {
-        if (_httpContextAccessor.HttpContext != null)
-        {
-            var storageName = _httpContextAccessor.HttpContext.Session.GetString("StorageName");
 
-            if (storageName == null)
-                storageName = "XmlStorage";
-            
-            switch (storageName)
-            {
-                case "XmlStorage":
-                    _factory = _serviceProvider.GetRequiredService<ToDoListXmlRepository>();
-                    break;
-                case "DbStorage":
-                    _factory = _serviceProvider.GetRequiredService<ToDoListDbPepository>();
-                    break;
-                default: throw new Exception("No storage");
-            }
+        var storageName = _httpContextAccessor.HttpContext.Session.GetString("StorageName") ??
+            _httpContextAccessor.HttpContext.Request.Headers["StorageName"].FirstOrDefault();
+
+        if (storageName == null)
+            storageName = "DbStorage";
+
+        switch (storageName)
+        {
+            case "XmlStorage":
+                _factory = _serviceProvider.GetRequiredService<ToDoListXmlRepository>();
+                break;
+            case "DbStorage":
+                _factory = _serviceProvider.GetRequiredService<ToDoListDbPepository>();
+                break;
+            default: throw new Exception("No storage");
         }
+
         return _factory;
     }
 }

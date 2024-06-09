@@ -12,6 +12,10 @@
       <id>51ed0d77-8cec-4465-8d90-753543601000</id>
       <name>Home</name>
     </category>
+    <category>
+      <id>39b5f8fa-fc88-4bed-99c6-17481f7c2637</id>
+      <name>wefsfsd</name>
+    </category>
   </categories>
   <todos>
     <todo>
@@ -34,17 +38,17 @@
       <categoryName>фів</categoryName>
     </todo>
     <todo>
-      <id>183a127b-44a5-49d1-b55c-68a323f21203</id>
-      <task>grfdfdgt</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>Study</categoryName>
-    </todo>
-    <todo>
       <id>c25c82cd-8f5d-481c-ada9-175c4bc22be4</id>
       <task>grfdfdgt</task>
       <isPerformed>True</isPerformed>
       <categoryName>Home</categoryName>
       <dateToPerform>6/19/2024 12:00:00 AM</dateToPerform>
+    </todo>
+    <todo>
+      <id>9db77ae3-c3e9-497b-b805-574794bb5525</id>
+      <task>ergsfdg</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>Home</categoryName>
     </todo>
   </todos>
 </database>

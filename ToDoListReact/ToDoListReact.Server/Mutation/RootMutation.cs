@@ -1,5 +1,6 @@
 using GraphQL;
 using GraphQL.Types;
+using ToDoList.Factory;
 using ToDoList.Models.Domain;
 using ToDoList.Repository;
 using ToDoListAPI.Type;
@@ -8,7 +9,7 @@ namespace ToDoListAPI.Mutation;
 
 public sealed class RootMutation : ObjectGraphType
 {
-    public RootMutation(IToDoListRepository todoListRepository)
+    public RootMutation(StorageChanger storageChanger)
     {
 
         Field<ToDoType>("addToDo").Arguments(new QueryArguments(new QueryArgument<ToDoInputType>
@@ -17,6 +18,9 @@ public sealed class RootMutation : ObjectGraphType
         }
         )).Resolve(context =>
         {
+
+            var todoListRepository = storageChanger.GetToDoListRepository();
+
             var todo = context.GetArgument<ToDo>("todo");
 
             return todoListRepository.AddToDo(todo);
@@ -29,6 +33,8 @@ public sealed class RootMutation : ObjectGraphType
         }
         )).Resolve(context =>
         {
+            var todoListRepository = storageChanger.GetToDoListRepository();
+
             var handledToDo = context.GetArgument<ToDo>("handlePerformed");
 
             return todoListRepository.HandlePerformed(handledToDo);
@@ -46,6 +52,8 @@ public sealed class RootMutation : ObjectGraphType
                 Id = todoId,
             };
 
+            var todoListRepository = storageChanger.GetToDoListRepository();
+
             todoListRepository.DeleteToDo(todoToDelete);
 
             return "ToDo with id " + todoId + " has been deleted";
@@ -57,6 +65,8 @@ public sealed class RootMutation : ObjectGraphType
         }
            )).Resolve(context =>
            {
+               var todoListRepository = storageChanger.GetToDoListRepository();
+
                return todoListRepository.AddCategory(context.GetArgument<Category>("category"));
            });
     }

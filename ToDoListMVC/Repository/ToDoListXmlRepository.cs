@@ -112,7 +112,7 @@ namespace ToDoList.Repository
                     document);
             }
 
-            return null;
+            return todo;
         }
 
         public Category AddCategory(Category category)
@@ -142,10 +142,10 @@ namespace ToDoList.Repository
                     document);
             }
 
-            return null;
+            return category;
         }
 
-        public ToDo HandlePerformed(ToDo todo) 
+        public ToDo HandlePerformed(ToDo todo)
         {
             XmlDocument document = new XmlDocument();
             document.Load(_xmlStorageContext.XmlStoragePath);
@@ -158,13 +158,25 @@ namespace ToDoList.Repository
             {
                 XmlElement isPerformed = (XmlElement)todoNode.SelectSingleNode("isPerformed")!;
 
-                isPerformed.InnerText = (!todo.IsPerformed).ToString();
-                document.Save(_xmlStorageContext.XmlStoragePath);
-            }
+                bool newIsPerformed = !todo.IsPerformed;
+                isPerformed.InnerText = newIsPerformed.ToString();
 
-            return null;
+                document.Save(_xmlStorageContext.XmlStoragePath);
+
+                ToDo updatedToDo = new ToDo
+                {
+                    Id = todo.Id,
+                    Task = todo.Task,
+                    IsPerformed = newIsPerformed,
+                    CategoryName = todo.CategoryName,
+                    DateToPerform = todo.DateToPerform
+                };
+
+                return updatedToDo;
+            }
+            return todo;
         }
-        
+
         public void DeleteToDo(ToDo todo)
         {
             XmlDocument document = new XmlDocument();
