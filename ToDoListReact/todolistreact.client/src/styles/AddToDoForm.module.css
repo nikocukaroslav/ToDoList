@@ -1,7 +1,14 @@
 .addToDoForm {
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 0.4rem;
+}
+
+.container {
+    display: flex;
+    width: 100%;
     gap: 0.4rem;
 }
 
@@ -10,18 +17,16 @@ input {
 }
 
 .date {
-    width: 12%;
     display: flex;
     justify-content: flex-end;
 }
 
 select {
+    width: 100%;
+    height: 3rem;
     border: 2px solid #242424;
     border-radius: 6px;
     background-color: inherit;
-    display: flex;
-    height: 100%;
-    width: 7%;
 }
 
 select:focus {

@@ -38,33 +38,38 @@ export function AddToDoForm() {
 
     return (
         <form className={styles.addToDoForm} onSubmit={handleSubmit}>
-            <input
-                type="text"
-                value={task}
-                onChange={(e) => setTask(e.target.value)}
-                required
-            />
-            <select
-                value={categoryName}
-                onChange={(e) => {
-                    const selectedCategory = categories.find(
-                        (category) => category.name === e.target.value
-                    );
-                    setCategoryName(selectedCategory.name);
-                }}
-                required
-            >
-                {categories.map((category, index) => (
-                    <option key={index}>{category.name}</option>
-                ))}
-            </select>
-            <input
-                value={dateToPerform}
-                type="date"
-                className={styles.date}
-                onChange={(e) => setDateToPerform(e.target.value)}
-            />
-            <button>Add</button>
+            <div className={styles.container}>
+                <select
+                    value={categoryName}
+                    onChange={(e) => {
+                        const selectedCategory = categories.find(
+                            (category) => category.name === e.target.value
+                        );
+                        setCategoryName(selectedCategory.name);
+                    }}
+                    required
+                >
+                    {categories.map((category, index) => (
+                        <option key={index}>{category.name}</option>
+                    ))}
+                </select>
+                <input
+                    value={dateToPerform}
+                    type="date"
+                    className={styles.date}
+                    onChange={(e) => setDateToPerform(e.target.value)}
+                />
+            </div>
+            <div className={styles.container}>
+
+                <input
+                    type="text"
+                    value={task}
+                    onChange={(e) => setTask(e.target.value)}
+                    required
+                />
+                <button>Add</button>
+            </div>
         </form>
     );
 }

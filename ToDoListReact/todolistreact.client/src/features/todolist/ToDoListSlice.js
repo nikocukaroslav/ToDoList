@@ -6,6 +6,7 @@ export const initialState = {
     todos: [],
     categories: [],
     storage: "XmlStorage",
+    addCategoryFormActive: true,
 };
 
 
@@ -188,6 +189,9 @@ const toDoListSlice = createSlice({
         changeStorage(state, action) {
             state.storage = action.payload;
         },
+        handleAddCategoryFormActive(state) {
+            state.addCategoryFormActive = !state.addCategoryFormActive
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchToDos.fulfilled, (state, action) => {
@@ -215,6 +219,6 @@ const toDoListSlice = createSlice({
     },
 });
 
-export const {changeStorage} = toDoListSlice.actions;
+export const {changeStorage, handleAddCategoryFormActive} = toDoListSlice.actions;
 
 export default toDoListSlice.reducer;

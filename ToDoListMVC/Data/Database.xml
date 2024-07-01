@@ -19,15 +19,9 @@
   </categories>
   <todos>
     <todo>
-      <id>e854374e-c287-46fa-b7a5-4122b3dd32e3</id>
-      <task>asdads</task>
-      <isPerformed>False</isPerformed>
-      <categoryName>Study</categoryName>
-    </todo>
-    <todo>
       <id>2abb512a-4793-49db-86a5-380370598a13</id>
       <task>Sugar</task>
-      <isPerformed>True</isPerformed>
+      <isPerformed>False</isPerformed>
       <categoryName>Home</categoryName>
       <dateToPerform>5/30/2024 12:00:00 AM</dateToPerform>
     </todo>
@@ -47,8 +41,14 @@
     <todo>
       <id>9db77ae3-c3e9-497b-b805-574794bb5525</id>
       <task>ergsfdg</task>
-      <isPerformed>False</isPerformed>
+      <isPerformed>True</isPerformed>
       <categoryName>Home</categoryName>
+    </todo>
+    <todo>
+      <id>440fd6f2-050b-4a26-a062-c9c1d402b906</id>
+      <task>fdsdsdfsfd</task>
+      <isPerformed>True</isPerformed>
+      <categoryName>wefsfsd</categoryName>
     </todo>
   </todos>
 </database>

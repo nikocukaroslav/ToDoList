@@ -19,12 +19,10 @@ function StorageChanger() {
     }
 
     return (
-        <div className={styles.changeStorage}>
-            <select onChange={handleStorage}>
-                <option value="XmlStorage">Xml Storage</option>
-                <option value="DbStorage">Db Storage</option>
-            </select>
-        </div>
+        <select onChange={handleStorage} className={styles.select}>
+            <option value="XmlStorage">Xml Storage</option>
+            <option value="DbStorage">Db Storage</option>
+        </select>
     );
 }
 

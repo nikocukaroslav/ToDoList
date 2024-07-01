@@ -1,7 +1,7 @@
 import styles from "../../styles/AddCategoty.module.css";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {addCategory} from "@/features/todolist/ToDoListSlice.js";
+import {addCategory, handleAddCategoryFormActive} from "@/features/todolist/ToDoListSlice.js";
 import {generateGUID} from "@/helpers.js";
 import LeftArrowSvg from "@/svg/LeftArrowSvg.jsx";
 import PlusSvg from "@/svg/PlusSvg.jsx";
@@ -11,6 +11,11 @@ export function AddCategory() {
     const [categoryName, setCategoryName] = useState("");
 
     const dispatch = useDispatch();
+
+    function handleActive() {
+        setActive((active) => !active);
+        dispatch(handleAddCategoryFormActive());
+    }
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -31,7 +36,7 @@ export function AddCategory() {
             {active === false ? (
                 <div
                     className={styles.addCategoryButton}
-                    onClick={() => setActive((active) => !active)}
+                    onClick={handleActive}
                 >
                     <span>Add category</span>
                     <PlusSvg/>
@@ -40,7 +45,7 @@ export function AddCategory() {
                 <form className={styles.addCategoryForm} onSubmit={handleSubmit}>
                <span
                    className={styles.backButton}
-                   onClick={() => setActive((active) => !active)}
+                   onClick={handleActive}
                >
                     <LeftArrowSvg/>
                </span>

@@ -1,28 +1,7 @@
-.changeStorage {
-    border: 2px solid #242424;
-    display: flex;
-    height: 2rem;
-    width: 20%;
+.select {
+    background-color: #333;
     position: absolute;
-    top: 0;
-    left: 0;
-    border-top: none;
-    border-left: none;
-}
-
-.changeStorage select {
-    border-radius: unset;
-    width: 100%;
-    border: none;
-}
-
-.changeStorage button {
-    border-radius: unset;
-    border: none;
-    padding: 0;
-    width: 25%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: 2%;
+    left: 1%;
+    width: 12rem;
 }
