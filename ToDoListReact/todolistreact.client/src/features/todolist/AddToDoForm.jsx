@@ -1,7 +1,7 @@
 import styles from "../../styles/AddToDoForm.module.css";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addToDo, fetchCategories} from "./ToDoListSlice.js";
+import {createToDo, fetchCategories} from "./ToDoListSlice.js";
 import {generateGUID} from "@/helpers.js";
 
 export function AddToDoForm() {
@@ -30,7 +30,7 @@ export function AddToDoForm() {
             dateToPerform: dateToPerform || null,
         };
 
-        dispatch(addToDo(newToDo));
+        dispatch(createToDo(newToDo));
 
         setTask("");
         setDateToPerform("");

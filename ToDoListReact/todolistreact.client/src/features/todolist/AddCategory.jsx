@@ -1,7 +1,7 @@
 import styles from "../../styles/AddCategoty.module.css";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {addCategory, handleAddCategoryFormActive} from "@/features/todolist/ToDoListSlice.js";
+import {createCategory, handleAddCategoryFormActive} from "@/features/todolist/ToDoListSlice.js";
 import {generateGUID} from "@/helpers.js";
 import LeftArrowSvg from "@/svg/LeftArrowSvg.jsx";
 import PlusSvg from "@/svg/PlusSvg.jsx";
@@ -25,7 +25,7 @@ export function AddCategory() {
             name: categoryName,
         };
 
-        dispatch(addCategory(newCategory));
+        dispatch(createCategory(newCategory));
 
         setCategoryName("");
         setActive(false);

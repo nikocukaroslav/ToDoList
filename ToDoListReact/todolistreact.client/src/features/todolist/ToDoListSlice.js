@@ -1,4 +1,6 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
+import {from} from "rxjs";
+import {map, switchMap} from "rxjs/operators";
 
 export const BASE_URL = "https://localhost:7208/graphql";
 
@@ -9,38 +11,34 @@ export const initialState = {
     addCategoryFormActive: true,
 };
 
-
-export const fetchCategories = createAsyncThunk(
-    "todolist/fetchCategories",
-    async (_, {getState}) => {
-        const state = getState();
-        const response = await fetch(BASE_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "StorageName": state.todolist.storage
-            },
-            body: JSON.stringify({
-                query: `
+export const fetchCategories = () => (dispatch, getState) => {
+    const state = getState();
+    from(fetch(BASE_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "StorageName": state.todolist.storage
+        },
+        body: JSON.stringify({
+            query: `
                     {
                          categories {
                             name
                         }
                     }
                 `
-            }),
-        });
-        const data = await response.json();
-        return data.data.categories;
-    }
-);
+        }),
+    }))
+        .pipe(
+            switchMap(response => from(response.json())),
+            map(data => data.data.categories)
+        ).subscribe(categories => dispatch(setCategories(categories))
+    )
+}
 
-
-export const fetchToDos = createAsyncThunk(
-    "todolist/fetchToDos",
-    async (_, {getState}) => {
-        const state = getState();
-        const response = await fetch(BASE_URL, {
+export const fetchToDos = () => (dispatch, getState) => {
+    const state = getState();
+    from(fetch(BASE_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -59,18 +57,17 @@ export const fetchToDos = createAsyncThunk(
                     }
                 `
             }),
-        });
-        const data = await response.json();
-        return data.data.todos;
-    }
-);
+        })
+    ).pipe(
+        switchMap(response => from(response.json())),
+        map(data => data.data.todos),
+    ).subscribe(todos => dispatch(setToDos(todos)))
+}
 
-
-export const addToDo = createAsyncThunk(
-    "todolist/addToDo",
-    async (newToDo, {getState}) => {
-        const state = getState();
-        await fetch(BASE_URL, {
+export const createToDo = (newToDo) => (dispatch, getState) => {
+    const state = getState();
+    from(
+        fetch(BASE_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -92,16 +89,16 @@ export const addToDo = createAsyncThunk(
                     todo: newToDo
                 }
             }),
-        });
-        return newToDo;
-    }
-);
+        })).pipe(
+        switchMap(response => from(response.json())),
+        map(data => data.data.addToDo)
+    ).subscribe(createdToDo => dispatch(addToDo(createdToDo)))
+}
 
-export const togglePerformed = createAsyncThunk(
-    "todolist/togglePerformed",
-    async (toggledToDo, {getState}) => {
-        const state = getState();
-        const response = await fetch(BASE_URL, {
+export const togglePerformed = (toggledToDo) => (dispatch, getState) => {
+    const state = getState();
+    from(
+        fetch(BASE_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -120,20 +117,17 @@ export const togglePerformed = createAsyncThunk(
                     todo: toggledToDo
                 }
             }),
-        });
-        const data = await response.json();
-
-        return data.data.handlePerformed;
-
-    }
-);
+        })).pipe(
+        switchMap(response => from(response.json())),
+        map(data => data.data.handlePerformed)
+    ).subscribe(toggledToDo => dispatch(toggleToDo(toggledToDo)))
+}
 
 
-export const deleteToDo = createAsyncThunk(
-    "todolist/deleteToDo",
-    async (id, {getState}) => {
-        const state = getState();
-        await fetch(BASE_URL, {
+export const deleteToDo = (id) => (dispatch, getState) => {
+    const state = getState();
+    from(
+        fetch(BASE_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -149,16 +143,14 @@ export const deleteToDo = createAsyncThunk(
                     id: id
                 }
             }),
-        });
-        return id;
-    }
-);
+        })
+    ).subscribe(_ => dispatch(removeToDo(id)))
+}
 
-export const addCategory = createAsyncThunk(
-    "todolist/addCategory",
-    async (newCategory, {getState}) => {
-        const state = getState();
-        await fetch(BASE_URL, {
+export const createCategory = (newCategory) => (dispatch, getState) => {
+    const state = getState();
+    from(
+        fetch(BASE_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -177,10 +169,12 @@ export const addCategory = createAsyncThunk(
                     category: newCategory
                 }
             }),
-        });
-        return newCategory;
-    }
-)
+        })
+    ).pipe(
+        switchMap(response => from(response.json())),
+        map(data => data.data.addCategory)
+    ).subscribe(newCategory => dispatch(addCategory(newCategory)))
+}
 
 const toDoListSlice = createSlice({
     name: "todolist",
@@ -192,33 +186,40 @@ const toDoListSlice = createSlice({
         handleAddCategoryFormActive(state) {
             state.addCategoryFormActive = !state.addCategoryFormActive
         },
-    },
-    extraReducers: (builder) => {
-        builder.addCase(fetchToDos.fulfilled, (state, action) => {
-            state.todos = action.payload;
-        });
-        builder.addCase(fetchCategories.fulfilled, (state, action) => {
+        setCategories(state, action) {
             state.categories = action.payload;
-        });
-        builder.addCase(addToDo.fulfilled, (state, action) => {
+        },
+        setToDos(state, action) {
+            state.todos = action.payload;
+        },
+        addToDo(state, action) {
             state.todos.push(action.payload);
-        });
-        builder.addCase(addCategory.fulfilled, (state, action) => {
-            state.categories.push(action.payload);
-        });
-        builder.addCase(togglePerformed.fulfilled, (state, action) => {
+        },
+        toggleToDo(state, action) {
             state.todos = state.todos.map((todo) =>
                 todo.id === action.payload.id
                     ? {...todo, isPerformed: action.payload.isPerformed}
                     : todo,
             );
-        });
-        builder.addCase(deleteToDo.fulfilled, (state, action) => {
+        },
+        removeToDo(state, action) {
             state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-        });
-    },
+        },
+        addCategory(state, action) {
+            state.categories.push(action.payload);
+        }
+    }
 });
 
-export const {changeStorage, handleAddCategoryFormActive} = toDoListSlice.actions;
+export const {
+    changeStorage,
+    handleAddCategoryFormActive,
+    setCategories,
+    setToDos,
+    addToDo,
+    toggleToDo,
+    removeToDo,
+    addCategory,
+} = toDoListSlice.actions;
 
 export default toDoListSlice.reducer;

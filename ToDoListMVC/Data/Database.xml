@@ -16,39 +16,21 @@
       <id>39b5f8fa-fc88-4bed-99c6-17481f7c2637</id>
       <name>wefsfsd</name>
     </category>
+    <category>
+      <id>18ed941e-e717-44a5-8ec9-5f4e64a33b75</id>
+      <name>wqeqwe</name>
+    </category>
+    <category>
+      <id>5f7e900c-6a32-4a67-bba3-dce855740364</id>
+      <name>1</name>
+    </category>
   </categories>
   <todos>
     <todo>
-      <id>2abb512a-4793-49db-86a5-380370598a13</id>
-      <task>Sugar</task>
+      <id>2bed12e0-c004-4ffc-9dd2-36de8c7f6165</id>
+      <task>asdasdsda</task>
       <isPerformed>False</isPerformed>
       <categoryName>Home</categoryName>
-      <dateToPerform>5/30/2024 12:00:00 AM</dateToPerform>
-    </todo>
-    <todo>
-      <id>f4615d08-7463-4bf0-81dd-8967aae93545</id>
-      <task>asdsad</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>фів</categoryName>
-    </todo>
-    <todo>
-      <id>c25c82cd-8f5d-481c-ada9-175c4bc22be4</id>
-      <task>grfdfdgt</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>Home</categoryName>
-      <dateToPerform>6/19/2024 12:00:00 AM</dateToPerform>
-    </todo>
-    <todo>
-      <id>9db77ae3-c3e9-497b-b805-574794bb5525</id>
-      <task>ergsfdg</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>Home</categoryName>
-    </todo>
-    <todo>
-      <id>440fd6f2-050b-4a26-a062-c9c1d402b906</id>
-      <task>fdsdsdfsfd</task>
-      <isPerformed>True</isPerformed>
-      <categoryName>wefsfsd</categoryName>
     </todo>
   </todos>
 </database>

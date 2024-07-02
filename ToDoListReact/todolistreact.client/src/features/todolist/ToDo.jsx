@@ -14,6 +14,7 @@ export function ToDo({todo}) {
         const id = todo.id;
 
         dispatch(deleteToDo(id));
+
     }
 
 
