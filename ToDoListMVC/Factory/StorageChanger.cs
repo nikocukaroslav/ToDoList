@@ -18,7 +18,6 @@ public class StorageChanger : IToDoListFactory
 
     public IToDoListRepository? GetToDoListRepository()
     {
-
         var storageName = _httpContextAccessor.HttpContext.Session.GetString("StorageName") ??
             _httpContextAccessor.HttpContext.Request.Headers["StorageName"].FirstOrDefault();
 

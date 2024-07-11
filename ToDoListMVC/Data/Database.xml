@@ -24,6 +24,14 @@
       <id>5f7e900c-6a32-4a67-bba3-dce855740364</id>
       <name>1</name>
     </category>
+    <category>
+      <id>8c9b0d10-52d8-49c7-8fcb-9ac7ba199c3c</id>
+      <name>sdfsdfsd</name>
+    </category>
+    <category>
+      <id>1817f45e-c664-4f3b-93c4-45a2724ac8f6</id>
+      <name>ew fdssdf</name>
+    </category>
   </categories>
   <todos>
     <todo>
@@ -31,6 +39,20 @@
       <task>asdasdsda</task>
       <isPerformed>False</isPerformed>
       <categoryName>Home</categoryName>
+    </todo>
+    <todo>
+      <id>2c75d3d3-da17-46e4-b241-826be3fe3457</id>
+      <task>ghfjghjhg</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>Home</categoryName>
+      <dateToPerform>7/18/2024 12:00:00 AM</dateToPerform>
+    </todo>
+    <todo>
+      <id>7410a425-5f1a-4e1b-9462-d00ffb111469</id>
+      <task>fdgf</task>
+      <isPerformed>False</isPerformed>
+      <categoryName>1</categoryName>
+      <dateToPerform>7/18/2024 12:00:00 AM</dateToPerform>
     </todo>
   </todos>
 </database>

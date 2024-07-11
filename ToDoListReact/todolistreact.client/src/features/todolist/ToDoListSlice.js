@@ -1,8 +1,25 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {from} from "rxjs";
 import {map, switchMap} from "rxjs/operators";
+import {ofType} from "redux-observable";
 
 export const BASE_URL = "https://localhost:7208/graphql";
+
+const graphQlQuery = (query, variables, state) => {
+    return from(fetch(BASE_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "StorageName": state.todolist.storage
+        },
+        body: JSON.stringify({
+            query,
+            variables
+        }),
+    })).pipe(
+        switchMap(response => from(response.json()))
+    );
+};
 
 export const initialState = {
     todos: [],
@@ -11,170 +28,132 @@ export const initialState = {
     addCategoryFormActive: true,
 };
 
-export const fetchCategories = () => (dispatch, getState) => {
-    const state = getState();
-    from(fetch(BASE_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "StorageName": state.todolist.storage
-        },
-        body: JSON.stringify({
-            query: `
-                    {
-                         categories {
-                            name
-                        }
-                    }
-                `
-        }),
-    }))
-        .pipe(
-            switchMap(response => from(response.json())),
-            map(data => data.data.categories)
-        ).subscribe(categories => dispatch(setCategories(categories))
-    )
-}
+const FETCH_CATEGORIES = "FETCH_CATEGORIES"
+const FETCH_TODOS = "FETCH_TODOS"
+const CREATE_CATEGORY = "CREATE_CATEGORY"
+const CREATE_TODO = "CREATE_TODO"
+const TOGGLE_PERFORMED = "TOGGLE_PERFORMED"
+const DELETE_TODO = "DELETE_TODO"
 
-export const fetchToDos = () => (dispatch, getState) => {
-    const state = getState();
-    from(fetch(BASE_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "StorageName": state.todolist.storage
-            },
-            body: JSON.stringify({
-                query: `
-                    {
-                         todos {
-                             id
-                             task
-                             isPerformed
-                             categoryName
-                             dateToPerform
-                        }
-                    }
-                `
-            }),
-        })
-    ).pipe(
-        switchMap(response => from(response.json())),
-        map(data => data.data.todos),
-    ).subscribe(todos => dispatch(setToDos(todos)))
-}
+export const fetchCategories = () => ({type: FETCH_CATEGORIES});
+export const fetchToDos = () => ({type: FETCH_TODOS});
+export const createCategory = (category) => ({type: CREATE_CATEGORY, payload: category});
+export const createToDo = (todo) => ({type: CREATE_TODO, payload: todo});
+export const togglePerformed = (todo) => ({type: TOGGLE_PERFORMED, payload: todo});
+export const deleteToDo = (id) => ({type: DELETE_TODO, payload: id});
 
-export const createToDo = (newToDo) => (dispatch, getState) => {
-    const state = getState();
-    from(
-        fetch(BASE_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "StorageName": state.todolist.storage
-            },
-            body: JSON.stringify({
-                query: `
-                     mutation AddToDo($todo: ToDoInputType!) {
-                         addToDo(todo: $todo) {
-                                id
-                                task
-                                isPerformed
-                                categoryName
-                                dateToPerform
-                        }
-                     }
-                     `,
-                variables: {
-                    todo: newToDo
-                }
-            }),
-        })).pipe(
-        switchMap(response => from(response.json())),
-        map(data => data.data.addToDo)
-    ).subscribe(createdToDo => dispatch(addToDo(createdToDo)))
-}
+export const fetchCategoriesEpic = (action$, state$) =>
+    action$.pipe(
+        ofType(FETCH_CATEGORIES),
+        switchMap(() =>
+            graphQlQuery(`
+        {
+            categories {
+                name
+            }
+        }`, {}, state$.value)
+                .pipe(
+                    map(response => setCategories(response.data.categories))
+                )
+        )
+    );
 
-export const togglePerformed = (toggledToDo) => (dispatch, getState) => {
-    const state = getState();
-    from(
-        fetch(BASE_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "StorageName": state.todolist.storage
-            },
-            body: JSON.stringify({
-                query: `
-                    mutation TogglePerformed($todo: ToDoInputType!){
-                         handlePerformed( handlePerformed: $todo ){
-                           id
-                           isPerformed
-                         }
-                        }
-                     `,
-                variables: {
-                    todo: toggledToDo
-                }
-            }),
-        })).pipe(
-        switchMap(response => from(response.json())),
-        map(data => data.data.handlePerformed)
-    ).subscribe(toggledToDo => dispatch(toggleToDo(toggledToDo)))
-}
+export const fetchToDosEpic = (action$, state$) =>
+    action$.pipe(
+        ofType(FETCH_TODOS),
+        switchMap(() =>
+            graphQlQuery(`
+        {
+             todos {
+                 id
+                 task
+                 isPerformed
+                 categoryName
+                 dateToPerform
+            }
+        }
+    `, {}, state$.value)
+                .pipe(
+                    map(response => setToDos(response.data.todos))
+                )
+        )
+    );
 
+export const createToDoEpic = (action$, state$) =>
+    action$.pipe(
+        ofType(CREATE_TODO),
+        switchMap(action =>
+            graphQlQuery(`
+        mutation AddToDo($todo: ToDoInputType!) {
+            addToDo(todo: $todo) {
+                   id
+                   task
+                   isPerformed
+                   categoryName
+                   dateToPerform
+           }
+        }
+        `,
+                {todo: action.payload}, state$.value)
+                .pipe(
+                    map(response => addToDo(response.data.addToDo))
+                )
+        )
+    );
 
-export const deleteToDo = (id) => (dispatch, getState) => {
-    const state = getState();
-    from(
-        fetch(BASE_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "StorageName": state.todolist.storage
-            },
-            body: JSON.stringify({
-                query: `
-                    mutation DeleteToDo($id: ID!){
-                        deleteToDo(id: $id)
-                        }
-                     `,
-                variables: {
-                    id: id
-                }
-            }),
-        })
-    ).subscribe(_ => dispatch(removeToDo(id)))
-}
+export const togglePerformedEpic = (action$, state$) =>
+    action$.pipe(
+        ofType(TOGGLE_PERFORMED),
+        switchMap(action =>
+            graphQlQuery(`
+        mutation TogglePerformed($todo: ToDoInputType!){
+             handlePerformed( handlePerformed: $todo ){
+               id
+               isPerformed
+             }
+            }
+         `,
+                {todo: action.payload}, state$.value)
+                .pipe(
+                    map(response => toggleToDo(response.data.handlePerformed))
+                )
+        )
+    );
 
-export const createCategory = (newCategory) => (dispatch, getState) => {
-    const state = getState();
-    from(
-        fetch(BASE_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "StorageName": state.todolist.storage
-            },
-            body: JSON.stringify({
-                query: `
-                         mutation AddCategory($category: CategoryInputType!) {
-                             addCategory(category: $category) {
-                                 id
-                                 name
-                            }
-                         }
-                     `,
-                variables: {
-                    category: newCategory
-                }
-            }),
-        })
-    ).pipe(
-        switchMap(response => from(response.json())),
-        map(data => data.data.addCategory)
-    ).subscribe(newCategory => dispatch(addCategory(newCategory)))
-}
+export const deleteToDoEpic = (action$, state$) =>
+    action$.pipe(
+        ofType(DELETE_TODO),
+        switchMap(action =>
+            graphQlQuery(`
+         mutation DeleteToDo($id: ID!){
+             deleteToDo(id: $id)
+             }
+          `,
+                {id: action.payload}, state$.value)
+                .pipe(
+                    map(() => removeToDo(action.payload))
+                )
+        )
+    );
+
+export const createCategoryEpic = (action$, state$) =>
+    action$.pipe(
+        ofType(CREATE_CATEGORY),
+        switchMap(action =>
+            graphQlQuery(`
+        mutation AddCategory($category: CategoryInputType!) {
+            addCategory(category: $category) {
+                id
+                name
+           }
+        }
+    `,
+                {category: action.payload}, state$.value)
+                .pipe(
+                    map(response => addCategory(response.data.addCategory))
+                )
+        )
+    );
 
 const toDoListSlice = createSlice({
     name: "todolist",
@@ -184,7 +163,7 @@ const toDoListSlice = createSlice({
             state.storage = action.payload;
         },
         handleAddCategoryFormActive(state) {
-            state.addCategoryFormActive = !state.addCategoryFormActive
+            state.addCategoryFormActive = !state.addCategoryFormActive;
         },
         setCategories(state, action) {
             state.categories = action.payload;
@@ -199,7 +178,7 @@ const toDoListSlice = createSlice({
             state.todos = state.todos.map((todo) =>
                 todo.id === action.payload.id
                     ? {...todo, isPerformed: action.payload.isPerformed}
-                    : todo,
+                    : todo
             );
         },
         removeToDo(state, action) {
@@ -223,3 +202,12 @@ export const {
 } = toDoListSlice.actions;
 
 export default toDoListSlice.reducer;
+
+export const epics = [
+    fetchCategoriesEpic,
+    fetchToDosEpic,
+    createCategoryEpic,
+    createToDoEpic,
+    togglePerformedEpic,
+    deleteToDoEpic
+];
